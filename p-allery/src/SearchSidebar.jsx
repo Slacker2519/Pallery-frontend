@@ -1,13 +1,13 @@
 import SearchBar from "./SearchBar.jsx";
 
-const Search = (props) => {
-    const { isOpen, onClose} = props;
+const SearchSidebar = (props) => {
+    const { isOpen, onClose, searchQuery, setSearchQuery} = props;
 
     return (
         <div>
             <aside className={`
-                sidebar move-from-left
-                ${isOpen ? 'translate-x-0' : '-translate-x-full'}
+                sidebar right-0 transform-animation
+                ${isOpen ? '-translate-x-0' : 'translate-x-full'}
             `}>
                 <div>
                     <button
@@ -17,11 +17,15 @@ const Search = (props) => {
                     </button>
                 </div>
                 <div className="flex flex-col justify-center items-center px-4 w-full">
-                    <SearchBar width="w-full" height="h-10"/>
+                    <SearchBar
+                        width="w-full" height="h-10"
+                        value={searchQuery}
+                        onChange={setSearchQuery}
+                    />
                 </div>
             </aside>
         </div>
     );
 }
 
-export default Search;
+export default SearchSidebar;

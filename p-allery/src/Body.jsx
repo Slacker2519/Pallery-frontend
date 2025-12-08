@@ -1,9 +1,14 @@
 import Gallery from "./Gallery.jsx";
 import Sidebar from "./Sidebar.jsx";
-import Search from './Search';
+import SearchSidebar from './SearchSidebar.jsx';
 
 const Body = (props) => {
-    const { sidebarOpen, setSidebarOpen, searchOpen, setSearchOpen } = props;
+    const
+        {
+            sidebarOpen, setSidebarOpen,
+            searchOpen, setSearchOpen,
+            searchQuery, setSearchQuery
+        } = props;
 
     return (
         <div className="flex flex-1 overflow-hidden">
@@ -11,12 +16,14 @@ const Body = (props) => {
                 isOpen={sidebarOpen}
                 onClose={() => setSidebarOpen(false)}
             />
-            <Search
+            <SearchSidebar
                 isOpen={searchOpen}
                 onClose={() => setSearchOpen(false)}
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
             />
             <div className="flex-1 overflow-y-auto px-5 pb-5">
-                <Gallery />
+                <Gallery searchQuery={searchQuery} />
             </div>
         </div>
     );

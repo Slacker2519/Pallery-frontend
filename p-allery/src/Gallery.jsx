@@ -1,31 +1,50 @@
 import { useState } from "react";
-import ILLUST from "./illust.js"
-import Illustration from "./Illustration.jsx"
-import FocusIllustration from "./FocusIllustration.jsx";
+import Images from "./images.js"
+import ImageFrame from "./ImageFrame.jsx"
+import FocusedImage from "./FocusedImage.jsx";
 import Overlay from "./Overlay";
 
-const Gallery = () => {
-    const [ selectedIllust, setSelectedIllust] = useState(null);
+const Gallery = (props) => {
+    const [ selectedImage, setSelectedImage ] = useState(null);
+    const { searchQuery } = props;
+
+    const filteredImages = FindMatches(searchQuery);
 
     return (
         <div>
             <div className="gallery">
-                {ILLUST.map((illust) => (
-                    <Illustration
+                {filteredImages.map((illust) => (
+                    <ImageFrame
                         key={illust.id}
                         illustration={ illust }
-                        onClick={() => setSelectedIllust(illust)}
+                        onClick={() => setSelectedImage(illust)}
                     />
                 ))}
             </div>
 
-            {selectedIllust && (
-                <Overlay onClick={() => setSelectedIllust(null)}>
-                    <FocusIllustration illustration={selectedIllust} />
+            {selectedImage && (
+                <Overlay onClick={() => setSelectedImage(null)}>
+                    <FocusedImage illustration={selectedImage} />
                 </Overlay>
             )}
         </div>
     );
+}
+
+function FindMatches(wordToMatch) {
+    if (!wordToMatch) return Images;
+
+    const searchWord = wordToMatch.toLowerCase();
+
+    return Images.filter(image => {
+        const tags = image.tag.join(' ').toLowerCase();
+        const author = image.author.toLowerCase();
+        const description = image.description.toLowerCase();
+
+        return tags.includes(searchWord) ||
+            author.includes(searchWord) ||
+            description.includes(searchWord);
+    });
 }
 
 export default Gallery;

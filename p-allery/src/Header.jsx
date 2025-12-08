@@ -3,7 +3,12 @@ import { FiMoon } from "react-icons/fi";
 import SearchBar from "./SearchBar.jsx"
 
 const Header = (props) => {
-    const { onToggleDarkMode, onToggleSidebar, onToggleSearch, theme } = props;
+    const {
+        onToggleDarkMode, theme,
+        onToggleSidebar,
+        onToggleSearch,
+        searchQuery, setSearchQuery
+    } = props;
 
     return (
         <div className="header">
@@ -13,6 +18,8 @@ const Header = (props) => {
             <SearchBar
                 isHidden={true}
                 width="w-xl" height="h-10"
+                value={searchQuery}
+                onChange={setSearchQuery}
             />
             <div className="flex items-center gap-5">
                 <button className="hidden md:inline-block">

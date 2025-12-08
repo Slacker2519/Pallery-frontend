@@ -1,4 +1,4 @@
-const Illustration = (props) => {
+const ImageFrame = (props) => {
     const { illustration, onClick } = props;
 
     return (
@@ -17,4 +17,4 @@ const Illustration = (props) => {
     );
 }
 
-export default Illustration;
+export default ImageFrame;

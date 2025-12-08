@@ -1,5 +1,5 @@
 const SearchBar = (props) => {
-    const { isHidden, width, height } = props;
+    const { isHidden, width, height, value, onChange } = props;
 
     return (
         <div className={`
@@ -11,6 +11,8 @@ const SearchBar = (props) => {
             <input
                 type="text"
                 className="flex-1 outline-none bg-transparent"
+                value={value}
+                onChange={(e) => onChange(e.target.value)}
             />
         </div>
     );

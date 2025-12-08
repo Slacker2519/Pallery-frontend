@@ -1,4 +1,4 @@
-const FocusIllustration = (props) => {
+const FocusedImage = (props) => {
     const { illustration } = props;
 
     return (
@@ -13,4 +13,4 @@ const FocusIllustration = (props) => {
     );
 }
 
-export default FocusIllustration;
+export default FocusedImage;

@@ -11,7 +11,7 @@ const Sidebar = (props) => {
                 </div>
             )}
             <aside className={`
-                sidebar md:w-1/5 move-from-left
+                sidebar left-0 md:w-1/5 transform-animation
                 ${isOpen ? 'translate-x-0' : '-translate-x-full'}
             `}>
                 <div>

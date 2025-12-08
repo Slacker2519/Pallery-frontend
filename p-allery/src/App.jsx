@@ -6,6 +6,7 @@ function App() {
     const [theme, setTheme] = useState("dark");
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [searchOpen, setSearchOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
 
     return (
         <div className={`
@@ -20,10 +21,13 @@ function App() {
                 onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
                 onToggleSearch={() => setSearchOpen(!searchOpen)}
                 theme={theme}
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
             />
             <Body
                 sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen}
                 searchOpen={searchOpen} setSearchOpen={setSearchOpen}
+                searchQuery={searchQuery} setSearchQuery={setSearchQuery}
             />
         </div>
     );
