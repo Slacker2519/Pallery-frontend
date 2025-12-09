@@ -6,8 +6,8 @@ const Sidebar = (props) => {
     return (
         <div>
             {isOpen && (
-                <div onClick={onClose}>
-                    <Overlay />
+                <div>
+                    <Overlay zIndex="z-20" onClick={onClose} />
                 </div>
             )}
             <aside className={`

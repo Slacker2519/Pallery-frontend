@@ -1,9 +1,9 @@
 const Overlay = (props) => {
-    const { onClick, children } = props;
+    const { onClick, children, zIndex } = props;
 
     return (
         <div
-            className="overlay animate-fadeIn"
+            className={`overlay ${zIndex} animate-fadeIn`}
             onClick={onClick}
         >
             <div onClick={(e) => e.stopPropagation()}>

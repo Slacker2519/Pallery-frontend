@@ -89,7 +89,7 @@
     }
 
     .overlay {
-        @apply fixed flex items-center justify-center bg-black/70 inset-0 z-20
+        @apply fixed flex items-center justify-center bg-black/70 inset-0
     }
 
     .shadow {
@@ -101,7 +101,7 @@
     }
 
     .sidebar {
-        @apply w-full bg-light dark:bg-dark overflow-y-auto shadow z-30
+        @apply w-full bg-light dark:bg-dark overflow-y-auto z-30
         flex flex-col fixed bottom-0 top-0
     }
 }

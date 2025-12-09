@@ -23,8 +23,8 @@ const Gallery = (props) => {
             </div>
 
             {selectedImage && (
-                <Overlay onClick={() => setSelectedImage(null)}>
-                    <FocusedImage illustration={selectedImage} />
+                <Overlay zIndex="z-20" onClick={() => setSelectedImage(null)}>
+                    <FocusedImage image={selectedImage} />
                 </Overlay>
             )}
         </div>
