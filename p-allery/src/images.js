@@ -1,6 +1,5 @@
 const Images = [
     {
-        id: 1,
         tag: ["9Lana", "2D", "BALALAIKA", "Girl", "Doll", "Music"],
         author: "DENN",
         imageUrl: "https://pbs.twimg.com/media/GHBBZuObwAEiiDD?format=jpg&name=4096x4096",
@@ -8,7 +7,6 @@ const Images = [
         description: "BALALAIKA: https://youtu.be/S2Xu6_XWy4M?si=kI-B_kIIszn_AuLl",
     },
     {
-        id: 2,
         tag: ["9Lana", "2D", "CHINCHIRO-RHYTHM", "Girl", "Doll", "Music"],
         author: "DENN",
         imageUrl: "https://pbs.twimg.com/media/GakRwN5awAAwhwP?format=jpg&name=4096x4096",
@@ -16,7 +14,6 @@ const Images = [
         description: "CHINCHIRO-RHYTHM: https://youtu.be/RqK3bGxeH98?si=--OZ-8FIJU-wO2Pn",
     },
     {
-        id: 3,
         tag: ["9Lana", "2D", "1st anniversary", "Girl", "Doll", "Music"],
         author: "DENN",
         imageUrl: "https://pbs.twimg.com/media/Go490jlbAAA6GgF?format=jpg&name=large",
@@ -24,7 +21,6 @@ const Images = [
         description: "",
     },
     {
-        id: 4,
         tag: ["9Lana", "2D", "Youtube Music Weekend", "Key visual", "Girl", "Doll", "Music"],
         author: "DENN",
         imageUrl: "https://pbs.twimg.com/media/GzbYglWasAAaKNY?format=jpg&name=large",
@@ -32,7 +28,6 @@ const Images = [
         description: "",
     },
     {
-        id: 5,
         tag: ["9Lana", "2D", "NINE TAILS", "Girl", "Doll", "Music"],
         author: "DENN",
         imageUrl: "https://pbs.twimg.com/media/GzwC1ESaQAAVm6o?format=jpg&name=4096x4096",
@@ -40,7 +35,6 @@ const Images = [
         description: "NINE TAILS: https://youtu.be/l70B7oRYKoo?si=wOdljwZoKkFIBhbZ",
     },
     {
-        id: 6,
         tag: ["9Lana", "2D", "NINE TAILS", "Girl", "Doll", "Music"],
         author: "DENN",
         imageUrl: "https://pbs.twimg.com/media/GzwC1EUagAAMO35?format=jpg&name=4096x4096",
@@ -48,7 +42,6 @@ const Images = [
         description: "NINE TAILS: https://youtu.be/l70B7oRYKoo?si=wOdljwZoKkFIBhbZ",
     },
     {
-        id: 7,
         tag: ["9Lana", "2D", "NINE TAILS", "Girl", "Doll", "Music"],
         author: "DENN",
         imageUrl: "https://pbs.twimg.com/media/GzwhEOuaAAEZfc8?format=jpg&name=4096x4096",
@@ -56,7 +49,6 @@ const Images = [
         description: "NINE TAILS: https://youtu.be/l70B7oRYKoo?si=wOdljwZoKkFIBhbZ",
     },
     {
-        id: 8,
         tag: ["Ellen", "2D", "Girl", "ZZZ", "Game", "Gacha", "Shark", "Thiren", "Winter"],
         author: "Jiwoo",
         imageUrl: "https://pbs.twimg.com/media/GfnCOeub0AA5pZB?format=jpg&name=medium",
@@ -64,7 +56,6 @@ const Images = [
         description: "Ellen on a snowy winter night",
     },
     {
-        id: 9,
         tag: ["Ellen", "2D", "Girl", "ZZZ", "Game", "Gacha", "Shark", "Thiren", "Summer"],
         author: "Jiwoo",
         imageUrl: "https://pbs.twimg.com/media/GgdUlA5a8AAuB8W?format=jpg&name=4096x4096",
@@ -72,7 +63,6 @@ const Images = [
         description: "Ellen eating an ice cream inside a station",
     },
     {
-        id: 10,
         tag: ["Ellen", "2D", "Girl", "ZZZ", "Game", "Gacha", "Shark", "Thiren", "Summer"],
         author: "Jiwoo",
         imageUrl: "https://pbs.twimg.com/media/GgdlaTza8AEMdVQ?format=jpg&name=4096x4096",
@@ -80,7 +70,6 @@ const Images = [
         description: "Ellen taking a selfie eating an ice cream",
     },
     {
-        id: 11,
         tag: ["Ellen", "2D", "Girl", "ZZZ", "Game", "Gacha", "Shark", "Thiren", "Summer"],
         author: "Jiwoo",
         imageUrl: "https://pbs.twimg.com/media/Gkop8EtbkAMIA4U?format=jpg&name=4096x4096",
@@ -88,7 +77,6 @@ const Images = [
         description: "Ellen taking a picture of a hollow",
     },
     {
-        id: 12,
         tag: ["Ellen", "2D", "Girl", "ZZZ", "Game", "Gacha", "Shark", "Thiren", "Summer"],
         author: "Jiwoo",
         imageUrl: "https://pbs.twimg.com/media/GgdlgzlaMAAju1X?format=jpg&name=4096x4096",

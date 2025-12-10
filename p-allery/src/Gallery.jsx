@@ -13,11 +13,11 @@ const Gallery = (props) => {
     return (
         <div>
             <div className="gallery">
-                {filteredImages.map((illust) => (
+                {filteredImages.map((image, index) => (
                     <ImageFrame
-                        key={illust.id}
-                        illustration={ illust }
-                        onClick={() => setSelectedImage(illust)}
+                        key={index}
+                        illustration={ image }
+                        onClick={() => setSelectedImage(image)}
                     />
                 ))}
             </div>

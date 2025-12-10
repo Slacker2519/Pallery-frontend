@@ -25,7 +25,9 @@ const FocusedImage = (props) => {
                 <ImageDetailCard
                     isOpen={openDetail}
                     onClose={() => setOpenDetail(false)}
-                    tag={image.tag} author={image.author} description={image.description}
+                    tags={image.tag}
+                    author={image.author}
+                    description={image.description}
                 />
             </div>
         </div>

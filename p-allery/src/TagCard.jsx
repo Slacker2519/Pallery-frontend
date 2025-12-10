@@ -2,7 +2,8 @@ const TagCard = (props) => {
     const { children } = props;
 
     return (
-        <div className="border-1 rounded-lg text-center">
+        <div className="border border-dark dark:border-light text-dark dark:text-light
+        rounded-sm text-center p-1 inline-block break-words m-1">
             {children}
         </div>
     );
