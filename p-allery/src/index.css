@@ -104,6 +104,22 @@
         @apply w-full bg-light dark:bg-dark overflow-y-auto z-30
         flex flex-col fixed bottom-0 top-0
     }
+
+    .detail-card {
+        @apply fixed bottom-0 left-1/2 -translate-x-1/2 flex flex-col mb-3
+        w-5/6 h-2/4 bg-light dark:bg-dark rounded-lg overflow-y-auto z-50 p-4
+        md:relative md:left-0 md:bottom-0 md:mb-0 md:w-80 md:z-20
+        md:h-full border-1
+    }
+
+    .focused-image {
+        @apply flex flex-col md:flex-row md:justify-center z-30
+    }
+
+    .focused-image-container {
+        @apply relative flex bg-light p-2 md:p-3 rounded-lg shadow-lg z-30
+        shadow-light/50
+    }
 }
 
 @theme {
