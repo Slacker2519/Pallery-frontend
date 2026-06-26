@@ -1,50 +1,52 @@
 import { useState } from "react";
-import Images from "./images.js"
-import ImageFrame from "./ImageFrame.jsx"
-import FocusedImage from "./FocusedImage.jsx";
+import Images from "./images.js";
+import PaintingFrame from "./PaintingFrame.jsx";
+import FocusedPainting from "./FocusedPainting.jsx";
 import Overlay from "./Overlay";
 
 const Gallery = (props) => {
-    const [ selectedImage, setSelectedImage ] = useState(null);
-    const { searchQuery } = props;
+  const [selectedPainting, setselectedPainting] = useState(null);
+  const { searchQuery } = props;
 
-    const filteredImages = FindMatches(searchQuery);
+  const filteredPainting = FindMatches(searchQuery);
 
-    return (
-        <div>
-            <div className="gallery">
-                {filteredImages.map((image, index) => (
-                    <ImageFrame
-                        key={index}
-                        illustration={ image }
-                        onClick={() => setSelectedImage(image)}
-                    />
-                ))}
-            </div>
+  return (
+    <div>
+      <div className="gallery">
+        {filteredPainting.map((painting, index) => (
+          <PaintingFrame
+            key={index}
+            painting={painting}
+            onClick={() => setselectedPainting(painting)}
+          />
+        ))}
+      </div>
 
-            {selectedImage && (
-                <Overlay zIndex="z-20" onClick={() => setSelectedImage(null)}>
-                    <FocusedImage image={selectedImage} />
-                </Overlay>
-            )}
-        </div>
-    );
-}
+      {selectedPainting && (
+        <Overlay zIndex="z-20" onClick={() => setselectedPainting(null)}>
+          <FocusedPainting painting={selectedPainting} />
+        </Overlay>
+      )}
+    </div>
+  );
+};
 
 function FindMatches(wordToMatch) {
-    if (!wordToMatch) return Images;
+  if (!wordToMatch) return Images;
 
-    const searchWord = wordToMatch.toLowerCase();
+  const searchWord = wordToMatch.toLowerCase();
 
-    return Images.filter(image => {
-        const tags = image.tag.join(' ').toLowerCase();
-        const author = image.author.toLowerCase();
-        const description = image.description.toLowerCase();
+  return Images.filter((painting) => {
+    const tags = painting.tag.join(" ").toLowerCase();
+    const author = painting.author.toLowerCase();
+    const description = painting.description.toLowerCase();
 
-        return tags.includes(searchWord) ||
-            author.includes(searchWord) ||
-            description.includes(searchWord);
-    });
+    return (
+      tags.includes(searchWord) ||
+      author.includes(searchWord) ||
+      description.includes(searchWord)
+    );
+  });
 }
 
 export default Gallery;
