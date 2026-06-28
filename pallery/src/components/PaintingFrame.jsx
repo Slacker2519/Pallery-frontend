@@ -6,8 +6,8 @@ const PaintingFrame = (props) => {
       <button onClick={onClick} className="mb-1">
         <img
           id={painting.id}
-          src={painting.imageUrl}
-          alt={painting.description}
+          src={painting.url}
+          alt={painting.name}
           className="painting"
         />
       </button>

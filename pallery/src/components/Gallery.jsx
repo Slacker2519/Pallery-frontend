@@ -1,21 +1,32 @@
-import { useState } from "react";
-import Images from "./images.js";
+import { useState, useEffect } from "react";
+import { getAllPaintings } from "../api/painting.js";
 import PaintingFrame from "./PaintingFrame.jsx";
 import FocusedPainting from "./FocusedPainting.jsx";
-import Overlay from "./Overlay";
+import Overlay from "./Overlay.jsx";
 
 const Gallery = (props) => {
   const [selectedPainting, setselectedPainting] = useState(null);
+  const [paintings, setPaintings] = useState([]);
+  const [loading, setLoading] = useState(true);
   const { searchQuery } = props;
 
-  const filteredPainting = FindMatches(searchQuery);
+  useEffect(() => {
+    getAllPaintings().then((data) => {
+      setPaintings(data.paintings);
+      setLoading(false);
+    });
+  }, []);
+
+  const filteredPainting = FindMatches(searchQuery, paintings);
+
+  if (loading) return <div>Loading...</div>;
 
   return (
     <div>
       <div className="gallery">
-        {filteredPainting.map((painting, index) => (
+        {filteredPainting.map((painting) => (
           <PaintingFrame
-            key={index}
+            key={painting._id}
             painting={painting}
             onClick={() => setselectedPainting(painting)}
           />
@@ -31,15 +42,15 @@ const Gallery = (props) => {
   );
 };
 
-function FindMatches(wordToMatch) {
-  if (!wordToMatch) return Images;
+function FindMatches(wordToMatch, paintings) {
+  if (!wordToMatch) return paintings;
 
   const searchWord = wordToMatch.toLowerCase();
 
-  return Images.filter((painting) => {
-    const tags = painting.tag.join(" ").toLowerCase();
+  return paintings.filter((painting) => {
+    const tags = painting.tags.join(" ").toLowerCase();
     const author = painting.author.toLowerCase();
-    const description = painting.description.toLowerCase();
+    const description = painting.description.toLowerCase() || "";
 
     return (
       tags.includes(searchWord) ||

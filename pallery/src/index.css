@@ -134,6 +134,12 @@
         cursor-pointer active:bg-dark/20 dark:active:bg-white/20
         active:shadow-lg dark:active:shadow-light/20 rounded-lg;
     }
+
+    a {
+        @apply hover:text-violet-500 text-violet-500
+        hover:drop-shadow-[0_0_8px_rgba(139,92,246,0.8)]
+        transition-all duration-200;
+    }
 }
 
 @keyframes fadeIn {

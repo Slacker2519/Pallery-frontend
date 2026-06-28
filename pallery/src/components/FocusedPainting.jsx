@@ -9,8 +9,8 @@ const FocusedPainting = (props) => {
     <div className="focused-painting">
       <div className="focused-painting-container animate-zoomIn">
         <img
-          src={painting.imageUrl}
-          alt={painting.description}
+          src={painting.url}
+          alt={painting.name}
           className="max-w-[80vw] md:max-w-[55vw] max-h-[80vh] object-contain"
         />
         <button
@@ -25,9 +25,7 @@ const FocusedPainting = (props) => {
           <PaintingDetailCard
             isOpen={openDetail}
             onClose={() => setOpenDetail(false)}
-            tags={painting.tag}
-            author={painting.author}
-            description={painting.description}
+            painting={painting}
           />
         </div>
       )}
