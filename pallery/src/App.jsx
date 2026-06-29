@@ -12,7 +12,7 @@ function App() {
     <div
       className={`
                 ${theme}
-                w-full h-screen bg-light text-black dark:text-light dark:bg-dark
+                w-full min-h-screen bg-light text-black dark:text-light dark:bg-dark
                 flex flex-col
             `}
     >
