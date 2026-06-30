@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { FiSun, FiMoon } from "react-icons/fi";
 import { FaPlus } from "react-icons/fa";
 import SearchBar from "./SearchBar.jsx";
@@ -10,7 +11,6 @@ const Header = (props) => {
     onToggleSearch,
     searchQuery,
     setSearchQuery,
-    onPressPost,
   } = props;
 
   return (
@@ -28,14 +28,15 @@ const Header = (props) => {
       />
 
       <div className="flex items-center gap-5">
-        <button
-          onClick={onPressPost}
-          className="hidden lg:flex flex-wrap flex-row rounded-full items-center gap-2
+        <Link to="/post">
+          <button
+            className="hidden lg:flex flex-wrap flex-row rounded-full items-center gap-2
           text-light border border-dark dark:border-light bg-green-500"
-        >
-          <FaPlus />
-          <div>Add Post</div>
-        </button>
+          >
+            <FaPlus />
+            <div>Add Post</div>
+          </button>
+        </Link>
 
         <button className="hidden md:inline-block">
           <i className="fa-solid fa-user text-2xl"></i>

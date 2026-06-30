@@ -85,7 +85,7 @@
     }
 
     .search-bar {
-        @apply items-center border-3 rounded-full px-3 py-4.5;
+        @apply items-center border bg-light dark:bg-offDark rounded-full px-3 py-4.5;
     }
 
     .overlay {

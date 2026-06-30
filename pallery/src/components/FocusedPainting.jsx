@@ -17,7 +17,7 @@ const FocusedPainting = (props) => {
           className="absolute top-2 md:top-4 right-1 md:right-3 rounded-full"
           onClick={() => setOpenDetail(!openDetail)}
         >
-          <i className="fa-solid fa-ellipsis-vertical text-xl md:text-2xl text-green-400"></i>
+          <i className="fa-solid fa-ellipsis-vertical text-xl md:text-2xl text-violet-500"></i>
         </button>
       </div>
       {openDetail && (

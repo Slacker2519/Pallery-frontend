@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { createPainting } from "../../api/painting.js";
+import Sidebar from "../../components/Sidebar.jsx";
 import AnimatedPanel from "../../components/AnimatedPanel.jsx";
 
 const PostPainting = () => {
@@ -12,19 +13,22 @@ const PostPainting = () => {
     description: "",
     visibility: "public",
   });
+  const [openSideBar, setOpenSideBar] = useState(false);
   const [painting, setPainting] = useState(null);
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-  const [expanded, setExpanded] = useState(false);
 
-  const HandleChange = (e) => {
+  const toggleSideBar = () => setOpenSideBar(!openSideBar);
+
+  const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handlePaintingChange = (e) => {
     const file = e.target.files[0];
+    if (!file) return;
     setPainting(file);
     setPreview(URL.createObjectURL(file));
   };
@@ -34,14 +38,14 @@ const PostPainting = () => {
     setError(null);
 
     if (!painting) {
-      setError("Please select an image");
+      setError("Please select a painting");
       return;
     }
 
     setLoading(true);
 
     const data = new FormData();
-    data.append("image", painting);
+    data.append("painting", painting);
     data.append("name", formData.name);
     data.append("source", formData.source);
     data.append("tags", formData.tags);
@@ -72,8 +76,28 @@ const PostPainting = () => {
   };
 
   return (
-    <div className="flex justify-center items-center w-full min-h-screen dark dark:text-light dark:bg-dark">
-      <AnimatedPanel />
+    <div className="flex flex-col w-full min-h-screen dark dark:text-light dark:bg-dark">
+      <Sidebar isOpen={openSideBar} onClose={toggleSideBar} />
+      <div className="px-5 py-4">
+        <button onClick={toggleSideBar}>
+          <i className="fa-solid fa-bars text-xl xl:text-2xl"></i>
+        </button>
+      </div>
+      <div className="flex justify-center items-center">
+        <AnimatedPanel
+          preview={preview}
+          formData={formData}
+          onPaintingChange={handlePaintingChange}
+          onChange={handleChange}
+          onSubmit={handleSubmit}
+          loading={loading}
+          error={error}
+          success={success}
+          painting={painting}
+          setPainting={setPainting}
+          setPreview={setPreview}
+        />
+      </div>
     </div>
   );
 };
