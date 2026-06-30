@@ -31,7 +31,7 @@ const Header = (props) => {
         <Link to="/post">
           <button
             className="hidden lg:flex flex-wrap flex-row rounded-full items-center gap-2
-          text-light border border-dark dark:border-light bg-green-500"
+          text-light border border-dark dark:border-light bg-violet-500"
           >
             <FaPlus />
             <div>Add Post</div>

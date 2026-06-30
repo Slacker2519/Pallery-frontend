@@ -1,9 +1,10 @@
 import Overlay from "./Overlay.jsx";
 import TagCard from "./TagCard.jsx";
 import SafeLink from "./SafeLink.jsx";
+import { FaPen } from "react-icons/fa";
 
 const PaintingDetailCard = (props) => {
-  const { isOpen, onClose, painting } = props;
+  const { isOpen, onClose, painting, isMobile = false } = props;
 
   return (
     <div className="h-full">
@@ -13,28 +14,28 @@ const PaintingDetailCard = (props) => {
         </div>
       )}
       <aside
-        className={`
-                detail-card transform-animation
-                ${
-                  isOpen
-                    ? "translate-y-0 md:translate-x-[5%]"
-                    : "translate-y-[120%] md:translate-y-0 md:-translate-x-[120%]"
-                }
-            `}
+        className={
+          isMobile
+            ? `detail-card transform-animation ${isOpen ? "translate-y-0" : "translate-y-[120%]"}`
+            : "flex flex-col p-2 overflow-y-auto w-full h-full rounded-xl"
+        }
       >
-        <button
-          className="hidden self-end md:inline rounded-full mb-3"
-          onClick={onClose}
-        >
-          <i className="fa-solid fa-xmark"></i>
-        </button>
+        <div className="flex justify-between items-center mb-3">
+          <button className="hidden md:inline rounded-sm">
+            <FaPen />
+          </button>
 
-        <div className="flex mb-4">
+          <button className="hidden md:inline rounded-sm" onClick={onClose}>
+            <i className="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <div className="flex mb-4 items-center">
           <div className="mr-1">Name: </div>
           <SafeLink href={painting.source}>{painting.name}</SafeLink>
         </div>
 
-        <div className="flex mb-4">
+        <div className="flex items-center mb-4">
           {painting.tags && (
             <div>
               Tags:
@@ -45,12 +46,12 @@ const PaintingDetailCard = (props) => {
           )}
         </div>
 
-        <div className="flex mb-3">
+        <div className="flex items-center mb-3">
           <div className="mr-1">Author: </div>
           <SafeLink href={painting.authorUrl}>{painting.author}</SafeLink>
         </div>
 
-        <div className="flex mb-1">
+        <div className="flex items-center mb-1">
           {painting.description && (
             <div>Description: {painting.description}</div>
           )}

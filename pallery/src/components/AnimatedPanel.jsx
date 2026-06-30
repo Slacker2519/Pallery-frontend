@@ -3,6 +3,7 @@ import { FiPlusCircle } from "react-icons/fi";
 
 const AnimatedPanel = (props) => {
   const {
+    mode = "create",
     preview,
     formData,
     onPaintingChange,
@@ -16,7 +17,8 @@ const AnimatedPanel = (props) => {
   } = props;
 
   const fileInputRef = useRef(null);
-  const expanded = Boolean(painting);
+  const expanded = mode === "edit" ? true : Boolean(painting);
+  const paintingToShow = preview || (mode === "edit" ? formData.url : null);
 
   const handleChangePainting = () => {
     fileInputRef.current.click();
@@ -26,7 +28,7 @@ const AnimatedPanel = (props) => {
     // container
     <div
       className="hidden lg:flex flex-col absolute left-1/2 bottom-1/2 shadow-lg rounded-xl
-      border border-dark dark:border-light -translate-x-1/2 translate-y-1/2 items-center"
+      border border-dark dark:border-light -translate-x-1/2 translate-y-1/2"
     >
       {/* expandable panel*/}
       <div
@@ -47,9 +49,10 @@ const AnimatedPanel = (props) => {
             </button>
           ) : (
             <img
-              src={preview}
+              src={paintingToShow}
               alt="preview"
               className="w-full h-full object-contain"
+              onClick={handleChangePainting}
             />
           )}
         </div>
@@ -140,8 +143,12 @@ const AnimatedPanel = (props) => {
       <div className="flex justify-between items-center w-full rounded-b-xl p-5 bg-light dark:bg-dark">
         <button
           onClick={() => {
-            setPainting(null);
-            setPreview(null);
+            if (mode === "create") {
+              setPainting(null);
+              setPreview(null);
+            } else {
+              handleChangePainting();
+            }
           }}
           className={`rounded-full border w-[7vw] text-base bg-light dark:bg-offDark ${expanded ? "" : "hidden"}`}
         >
@@ -153,7 +160,13 @@ const AnimatedPanel = (props) => {
           disabled={loading}
           className={`rounded-full border w-[7vw] text-base bg-light dark:bg-offDark ${expanded ? "" : "hidden"}`}
         >
-          {loading ? "Posting..." : "Post"}
+          {loading
+            ? mode === "edit"
+              ? "Saving..."
+              : "Posting..."
+            : mode === "edit"
+              ? "Save"
+              : "Post"}
         </button>
       </div>
     </div>

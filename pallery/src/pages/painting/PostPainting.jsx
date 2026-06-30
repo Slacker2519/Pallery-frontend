@@ -85,6 +85,7 @@ const PostPainting = () => {
       </div>
       <div className="flex justify-center items-center">
         <AnimatedPanel
+          mode="create"
           preview={preview}
           formData={formData}
           onPaintingChange={handlePaintingChange}
