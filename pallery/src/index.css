@@ -103,7 +103,7 @@
 
     .detail-card {
         @apply fixed bottom-0 left-1/2 -translate-x-1/2 flex flex-col mb-3
-        w-5/6 h-2/4 bg-light dark:bg-dark rounded-lg overflow-y-auto z-50 p-4
+        w-5/6 h-2/4 bg-light dark:bg-dark rounded-lg overflow-y-auto z-40 p-4
         border;
     }
 }

@@ -45,7 +45,7 @@ const PostPainting = () => {
     setLoading(true);
 
     const data = new FormData();
-    data.append("painting", painting);
+    data.append("url", painting);
     data.append("name", formData.name);
     data.append("source", formData.source);
     data.append("tags", formData.tags);

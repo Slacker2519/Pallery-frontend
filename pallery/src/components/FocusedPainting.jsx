@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import PaintingDetailCard from "./PaintingDetailCard.jsx";
+import { FaEllipsisH } from "react-icons/fa";
 
 const useIsMobile = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -14,9 +15,15 @@ const useIsMobile = () => {
 };
 
 const FocusedPainting = (props) => {
-  const { painting } = props;
+  const { painting: initialPainting, onUpdate, onDelete } = props;
+  const [painting, setPainting] = useState(initialPainting);
   const [openDetail, setOpenDetail] = useState(false);
   const isMobile = useIsMobile();
+
+  const handleUpdate = (updatedPainting) => {
+    setPainting(updatedPainting);
+    if (onUpdate) onUpdate(updatedPainting);
+  };
 
   return (
     // container
@@ -35,11 +42,16 @@ const FocusedPainting = (props) => {
           />
 
           <button
-            className={`absolute top-2 md:top-7 right-1 md:right-7 rounded-xl
-              bg-violet-500 border border-light text-light ${openDetail ? "hidden" : ""}`}
+            className={`absolute top-1 md:top-3 right-4 md:right-6 rounded-full text-light
+              ${openDetail ? "hidden" : ""}`}
             onClick={() => setOpenDetail(!openDetail)}
           >
-            Details
+            <FaEllipsisH
+              strokeWidth={10}
+              stroke="black"
+              size={30}
+              fill="white"
+            />
           </button>
         </div>
 
@@ -55,6 +67,8 @@ const FocusedPainting = (props) => {
                 isOpen={openDetail}
                 onClose={() => setOpenDetail(false)}
                 painting={painting}
+                onUpdate={handleUpdate}
+                onDelete={onDelete}
                 isMobile={false}
               />
             )}
@@ -68,6 +82,8 @@ const FocusedPainting = (props) => {
             isOpen={openDetail}
             onClose={() => setOpenDetail(false)}
             painting={painting}
+            onUpdate={handleUpdate}
+            onDelete={onDelete}
             isMobile={true}
           />
         </div>

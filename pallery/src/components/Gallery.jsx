@@ -17,6 +17,19 @@ const Gallery = (props) => {
     });
   }, []);
 
+  const handleUpdate = (updatedPainting) => {
+    setPaintings(
+      paintings.map((p) =>
+        p._id === updatedPainting._id ? updatedPainting : p,
+      ),
+    );
+  };
+
+  const handleDelete = (id) => {
+    setselectedPainting(null);
+    setPaintings(paintings.filter((p) => p._id !== id));
+  };
+
   const filteredPainting = FindMatches(searchQuery, paintings);
 
   if (loading) return <div>Loading...</div>;
@@ -35,7 +48,12 @@ const Gallery = (props) => {
 
       {selectedPainting && (
         <Overlay zIndex="z-20" onClick={() => setselectedPainting(null)}>
-          <FocusedPainting painting={selectedPainting} />
+          <FocusedPainting
+            painting={selectedPainting}
+            onClose={() => setselectedPainting(null)}
+            onUpdate={handleUpdate}
+            onDelete={handleDelete}
+          />
         </Overlay>
       )}
     </div>

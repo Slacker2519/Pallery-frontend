@@ -24,10 +24,10 @@ export const createPainting = async (data) => {
 
 export const updatePainting = async (id, data) => {
   const res = await api.patch(`/paintings/${id}`, data);
-  return res.data;
+  return res.data.painting;
 };
 
-export const deletePainting = async (id, data) => {
-  const res = await api.delete(`/paintings/${id}`, data);
+export const deletePainting = async (id) => {
+  const res = await api.delete(`/paintings/${id}`);
   return res.data;
 };
