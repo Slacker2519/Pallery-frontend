@@ -8,13 +8,19 @@ const ConfirmCard = ({ isOpen, onConfirm, onCancel, title, message }) => {
     >
       <div className="bg-light dark:bg-dark border border-red-400 rounded-xl p-4 w-[50vw] md:w-[20vw] flex flex-col gap-3 shadow-lg">
         <div>
-          <p className="font-medium text-sm">{title}</p>
-          <p className="text-sm text-gray-500">{message}</p>
+          <p className="font-medium text-sm text-dark dark:text-light">
+            {title}
+          </p>
+          <p className="text-sm text-offDark dark:text-offLight">{message}</p>
         </div>
         <div className="flex justify-end gap-2">
-          <button onClick={onCancel} className="text-sm px-3 py-1.5">
+          <button
+            onClick={onCancel}
+            className="text-sm px-3 py-1.5 text-offDark dark:text-offLight"
+          >
             Cancel
           </button>
+
           <button
             onClick={onConfirm}
             className="text-sm px-3 py-1.5 bg-red-500 text-white rounded-lg border-none"

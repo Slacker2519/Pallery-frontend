@@ -4,7 +4,7 @@ import "./index.css";
 import App from "./App.jsx";
 import Post from "./pages/painting/PostPainting.jsx";
 import NotFound from "./components/NotFound.jsx";
-
+import ThemeProvider from "./context/ThemeProvider.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 const router = createBrowserRouter([
@@ -15,6 +15,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <ThemeProvider>
+      <RouterProvider router={router} />
+    </ThemeProvider>
   </StrictMode>,
 );

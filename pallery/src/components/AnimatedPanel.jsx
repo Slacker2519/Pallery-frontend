@@ -32,7 +32,7 @@ const AnimatedPanel = (props) => {
     >
       {/* expandable panel*/}
       <div
-        className={`flex h-[50vh] rounded-t-xl bg-light dark:bg-offDark overflow-hidden transition-all duration-500
+        className={`flex h-[50vh] rounded-t-xl bg-offLight dark:bg-offDark overflow-hidden transition-all duration-500
           ${expanded ? "w-[50vw]" : "justify-center items-center w-[35vw]"}`}
       >
         {/* left panel */}
@@ -51,8 +51,9 @@ const AnimatedPanel = (props) => {
             <img
               src={paintingToShow}
               alt="preview"
-              className="w-full h-full object-contain"
+              className="w-full h-full object-contain hover:cursor-pointer"
               onClick={handleChangePainting}
+              disabled={loading}
             />
           )}
         </div>
@@ -67,7 +68,8 @@ const AnimatedPanel = (props) => {
 
         {/* right panel */}
         <div
-          className={`overflow-hidden bg-light dark:bg-dark transition-all duration-500 flex flex-col gap-3 p-4 overflow-y-auto
+          className={`overflow-hidden bg-light dark:bg-dark transition-all duration-500
+            flex flex-col gap-3 p-4 overflow-y-auto
             ${expanded ? "flex-1 opacity-100 delay-100 px-3" : "w-0 opacity-0 px-0"}`}
         >
           {expanded && (
@@ -140,17 +142,23 @@ const AnimatedPanel = (props) => {
       </div>
 
       {/* bottom panel */}
-      <div className="flex justify-between items-center w-full rounded-b-xl p-5 bg-light dark:bg-dark">
+      <div
+        className="flex justify-between items-center w-full rounded-b-xl p-5
+        bg-light dark:bg-dark"
+      >
         <button
           onClick={() => {
             if (mode === "create") {
               setPainting(null);
               setPreview(null);
+              handleChangePainting();
             } else {
               handleChangePainting();
             }
           }}
-          className={`rounded-full border w-[7vw] text-base bg-light dark:bg-offDark ${expanded ? "" : "hidden"}`}
+          disabled={loading}
+          className={`rounded-full border w-[7vw] text-base bg-light dark:bg-dark
+            ${expanded ? "" : "hidden"}`}
         >
           Change
         </button>
@@ -158,7 +166,7 @@ const AnimatedPanel = (props) => {
         <button
           onClick={onSubmit}
           disabled={loading}
-          className={`rounded-full border w-[7vw] text-base bg-light dark:bg-offDark ${expanded ? "" : "hidden"}`}
+          className={`rounded-full border w-[7vw] text-base bg-light dark:bg-dark ${expanded ? "" : "hidden"}`}
         >
           {loading
             ? mode === "edit"

@@ -31,7 +31,7 @@ const FocusedPainting = (props) => {
       {/* expandable panel*/}
       <div
         className="relative flex rounded-lg z-30 shadow-lg shadow-light/50 animate-zoomIn
-          overflow-hidden transition-all duration-500 bg-light dark:bg-dark"
+          overflow-hidden transition-all duration-500 bg-transparent"
       >
         {/* left panel*/}
         <div className="shrink-0 rounded-lg p-2 md:p-3 bg-light h-full">
@@ -59,7 +59,7 @@ const FocusedPainting = (props) => {
         {!isMobile && (
           <div
             className={`h-full shrink-0 overflow-hidden bg-light dark:bg-dark
-              transition-all duration-500 overflow-y-auto rounded-xl border
+              transition-all duration-500 overflow-y-auto rounded-lg border border-light
               ${openDetail ? "w-[20vw] px-4 opacity-100 delay-100 ml-2" : "w-0 opacity-0 px-0"}`}
           >
             {openDetail && (

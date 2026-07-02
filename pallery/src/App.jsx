@@ -1,28 +1,21 @@
 import { useState } from "react";
 import Header from "./components/Header";
 import Body from "./components/Body";
+import { useTheme } from "./context/ThemeContext.js";
 
 function App() {
-  const [theme, setTheme] = useState("dark");
+  const { toggleTheme, isDark } = useTheme();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
   return (
-    <div
-      className={`
-                ${theme}
-                w-full min-h-screen bg-light text-black dark:text-light dark:bg-dark
-                flex flex-col
-            `}
-    >
+    <div className="w-full min-h-screen bg-light text-black dark:text-light dark:bg-dark flex flex-col">
       <Header
-        onToggleDarkMode={() => {
-          theme === "dark" ? setTheme("") : setTheme("dark");
-        }}
+        onToggleDarkMode={toggleTheme}
         onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
         onToggleSearch={() => setSearchOpen(!searchOpen)}
-        theme={theme}
+        theme={isDark ? "dark" : ""}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
       />

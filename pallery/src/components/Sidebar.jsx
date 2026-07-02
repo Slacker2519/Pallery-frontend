@@ -1,6 +1,7 @@
 import Overlay from "./Overlay.jsx";
 import { Link } from "react-router-dom";
 import { FaHome } from "react-icons/fa";
+import { FaFolderPlus } from "react-icons/fa";
 
 const Sidebar = (props) => {
   const { isOpen, onClose } = props;
@@ -29,6 +30,12 @@ const Sidebar = (props) => {
             <button className="bg-light dark:bg-offDark flex justify-start items-center gap-4 pl-7 w-full">
               <FaHome className="text-2xl" />
               <span className="text-xl">Home</span>
+            </button>
+          </Link>
+          <Link to="/post">
+            <button className="bg-light dark:bg-offDark flex justify-start items-center gap-4 pl-7 w-full">
+              <FaFolderPlus className="text-xl" />
+              <span className="text-xl">Create</span>
             </button>
           </Link>
         </div>

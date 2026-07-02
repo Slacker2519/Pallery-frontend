@@ -59,6 +59,7 @@ const PaintingDetailCard = (props) => {
     setError(null);
     try {
       await deletePainting(painting._id);
+      setIsConfirmOpen(false);
       onClose();
       if (onDelete) onDelete(painting._id);
     } catch (error) {
@@ -106,7 +107,7 @@ const PaintingDetailCard = (props) => {
         </div>
 
         <div className="flex flex-col mb-4">
-          <span className="text-sm font-semibold mb-1">Name:</span>
+          <span className="text-sm font-semibold mb-1">Name</span>
           {isEditing ? (
             <input
               type="text"
@@ -122,7 +123,7 @@ const PaintingDetailCard = (props) => {
 
         {isEditing && (
           <div className="flex flex-col mb-4">
-            <span className="text-sm font-semibold mb-1">Source link:</span>
+            <span className="text-sm font-semibold mb-1">Source URL</span>
             <input
               type="text"
               name="source"
@@ -134,7 +135,7 @@ const PaintingDetailCard = (props) => {
         )}
 
         <div className="flex flex-col mb-4">
-          <span className="text-sm font-semibold mb-1">Tags:</span>
+          <span className="text-sm font-semibold mb-1">Tags</span>
           {isEditing ? (
             <input
               type="text"
@@ -155,7 +156,7 @@ const PaintingDetailCard = (props) => {
         </div>
 
         <div className="flex flex-col mb-4">
-          <span className="text-sm font-semibold mb-1">Author:</span>
+          <span className="text-sm font-semibold mb-1">Author</span>
           {isEditing ? (
             <input
               type="text"
@@ -172,7 +173,7 @@ const PaintingDetailCard = (props) => {
         {isEditing && (
           <div className="flex flex-col mb-4">
             <span className="text-sm font-semibold mb-1">
-              Author contact link:
+              Author contact URL
             </span>
             <input
               type="text"
@@ -185,7 +186,7 @@ const PaintingDetailCard = (props) => {
         )}
 
         <div className="flex flex-col mb-4">
-          <span className="text-sm font-semibold mb-1">Description:</span>
+          <span className="text-sm font-semibold mb-1">Description</span>
           {isEditing ? (
             <textarea
               name="description"
