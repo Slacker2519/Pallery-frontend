@@ -118,7 +118,7 @@ const PostPainting = () => {
             <button
               onClick={showPreview}
               className="flex justify-center items-center w-[90vw] h-[25vh]
-              border rounded-lg bg-offDark text-4xl"
+              border rounded-lg bg-offLight dark:bg-offDark text-4xl"
             >
               {preview === null ? (
                 <FiPlusCircle />
@@ -237,7 +237,7 @@ const PostPainting = () => {
           <button
             onClick={handleSubmit}
             disabled={loading}
-            className="rounded-lg border text-base bg-violet-500"
+            className="rounded-lg border text-base bg-violet-500 text-light"
           >
             {!error ? (loading ? "Posting..." : "Post") : error}
           </button>

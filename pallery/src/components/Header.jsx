@@ -27,7 +27,7 @@ const Header = (props) => {
         onChange={setSearchQuery}
       />
 
-      <div className="flex items-center gap-5">
+      <div className="flex items-center gap-2">
         <Link to="/post">
           <button
             className="hidden lg:flex flex-wrap flex-row rounded-full items-center gap-2
@@ -42,11 +42,15 @@ const Header = (props) => {
           <i className="fa-solid fa-user text-2xl"></i>
         </button>
 
-        <div className="md:hidden">
-          <button onClick={onToggleSearch}>
-            <i className="fa-solid fa-magnifying-glass text-xl mt-2"></i>
+        <button onClick={onToggleSearch} className="md:hidden">
+          <i className="fa-solid fa-magnifying-glass text-xl mt-2"></i>
+        </button>
+
+        <Link to="/post">
+          <button className="md:hidden text-dark dark:text-light">
+            <i className="fa-solid fa-plus text-2xl"></i>
           </button>
-        </div>
+        </Link>
 
         <button className="icon" onClick={onToggleDarkMode}>
           {theme === "dark" ? (
