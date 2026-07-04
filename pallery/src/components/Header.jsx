@@ -1,17 +1,20 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { FiSun, FiMoon } from "react-icons/fi";
 import { FaPlus } from "react-icons/fa";
 import SearchBar from "./SearchBar.jsx";
 
 const Header = (props) => {
-  const {
-    onToggleDarkMode,
-    theme,
-    onToggleSidebar,
-    onToggleSearch,
-    searchQuery,
-    setSearchQuery,
-  } = props;
+  const { onToggleDarkMode, theme, onToggleSidebar, onToggleSearch, onSearch } =
+    props;
+
+  const [inputValue, setInputValue] = useState("");
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      onSearch(inputValue);
+    }
+  };
 
   return (
     <div className="header">
@@ -23,8 +26,9 @@ const Header = (props) => {
         isHidden={true}
         width="w-xl"
         height="h-10"
-        value={searchQuery}
-        onChange={setSearchQuery}
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+        onKeyDown={handleKeyDown}
       />
 
       <div className="flex items-center gap-2">

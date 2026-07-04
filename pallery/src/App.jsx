@@ -16,8 +16,7 @@ function App() {
         onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
         onToggleSearch={() => setSearchOpen(!searchOpen)}
         theme={isDark ? "dark" : ""}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
+        onSearch={setSearchQuery}
       />
       <Body
         sidebarOpen={sidebarOpen}

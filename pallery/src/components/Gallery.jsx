@@ -66,11 +66,13 @@ function FindMatches(wordToMatch, paintings) {
   const searchWord = wordToMatch.toLowerCase();
 
   return paintings.filter((painting) => {
-    const tags = painting.tags.join(" ").toLowerCase();
-    const author = painting.author.toLowerCase();
-    const description = painting.description.toLowerCase() || "";
+    const name = painting.name.toLowerCase();
+    const tags = (painting.tags ? painting.tags.join(" ") : "").toLowerCase();
+    const author = (painting.author || "").toLowerCase();
+    const description = (painting.description || "").toLowerCase();
 
     return (
+      name.includes(searchWord) ||
       tags.includes(searchWord) ||
       author.includes(searchWord) ||
       description.includes(searchWord)
