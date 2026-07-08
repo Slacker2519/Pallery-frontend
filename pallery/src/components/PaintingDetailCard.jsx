@@ -7,6 +7,7 @@ import ConfirmCard from "./ConfirmCard.jsx";
 import { FaPen } from "react-icons/fa";
 import { FaSave } from "react-icons/fa";
 import { FaRegTrashAlt } from "react-icons/fa";
+import { useAuth } from "../context/AuthContext.js";
 
 const PaintingDetailCard = (props) => {
   const {
@@ -30,6 +31,9 @@ const PaintingDetailCard = (props) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const { user } = useAuth();
+
+  const isOwner = user && painting.ownerId === user.userId;
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -86,7 +90,9 @@ const PaintingDetailCard = (props) => {
             : "flex flex-col p-2 overflow-y-auto w-full h-full rounded-xl relative"
         }
       >
-        <div className="flex justify-between items-center mb-4">
+        <div
+          className={`flex items-center mb-4 ${isOwner ? "justify-between" : "justify-end"}`}
+        >
           {isEditing ? (
             <button
               className="rounded-sm text-lg"
@@ -96,9 +102,11 @@ const PaintingDetailCard = (props) => {
               <FaSave />
             </button>
           ) : (
-            <button onClick={() => setIsEditing(true)} className="rounded-sm">
-              <FaPen />
-            </button>
+            isOwner && (
+              <button onClick={() => setIsEditing(true)} className="rounded-sm">
+                <FaPen />
+              </button>
+            )
           )}
 
           <button className="hidden md:inline rounded-sm" onClick={onClose}>
@@ -248,14 +256,16 @@ const PaintingDetailCard = (props) => {
           message="This can't be undone"
         />
 
-        <button
-          className="text-red-500 text-xl absolute right-0 bottom-4"
-          onClick={() => {
-            setIsConfirmOpen(true);
-          }}
-        >
-          <FaRegTrashAlt />
-        </button>
+        {isOwner && (
+          <button
+            className="text-red-500 text-xl absolute right-0 bottom-4"
+            onClick={() => {
+              setIsConfirmOpen(true);
+            }}
+          >
+            <FaRegTrashAlt />
+          </button>
+        )}
       </aside>
 
       {isConfirmOpen && (

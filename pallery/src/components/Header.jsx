@@ -1,14 +1,32 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FiSun, FiMoon } from "react-icons/fi";
 import { FaPlus } from "react-icons/fa";
 import SearchBar from "./SearchBar.jsx";
+import { useAuth } from "../context/AuthContext";
 
 const Header = (props) => {
-  const { onToggleDarkMode, theme, onToggleSidebar, onToggleSearch, onSearch } =
-    props;
+  const {
+    onToggleDarkMode,
+    theme,
+    onToggleSidebar,
+    onToggleSearch,
+    onSearch,
+    onLoginClick,
+    onProtectedNav,
+  } = props;
 
   const [inputValue, setInputValue] = useState("");
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const goToPost = () => {
+    if (user) {
+      navigate("/post");
+    } else {
+      onProtectedNav();
+    }
+  };
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
@@ -32,15 +50,14 @@ const Header = (props) => {
       />
 
       <div className="flex items-center gap-2">
-        <Link to="/post">
-          <button
-            className="hidden lg:flex flex-wrap flex-row rounded-full items-center gap-2
+        <button
+          onClick={goToPost}
+          className="hidden lg:flex flex-wrap flex-row rounded-full items-center gap-2
           text-light border border-dark dark:border-light bg-violet-500"
-          >
-            <FaPlus />
-            <div>Add Post</div>
-          </button>
-        </Link>
+        >
+          <FaPlus />
+          <div>Add Post</div>
+        </button>
 
         <button className="hidden md:inline-block">
           <i className="fa-solid fa-user text-2xl"></i>
@@ -50,11 +67,12 @@ const Header = (props) => {
           <i className="fa-solid fa-magnifying-glass text-xl mt-2"></i>
         </button>
 
-        <Link to="/post">
-          <button className="md:hidden text-dark dark:text-light">
-            <i className="fa-solid fa-plus text-2xl"></i>
-          </button>
-        </Link>
+        <button
+          onClick={goToPost}
+          className="md:hidden text-dark dark:text-light"
+        >
+          <i className="fa-solid fa-plus text-2xl"></i>
+        </button>
 
         <button className="icon" onClick={onToggleDarkMode}>
           {theme === "dark" ? (

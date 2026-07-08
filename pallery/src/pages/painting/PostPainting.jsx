@@ -1,4 +1,6 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext.js";
 import { createPainting } from "../../api/painting.js";
 import Sidebar from "../../components/Sidebar.jsx";
 import AnimatedPanel from "../../components/AnimatedPanel.jsx";
@@ -21,12 +23,17 @@ const PostPainting = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const fileInputRef = useRef(null);
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user) navigate("/");
+  }, [user, navigate]);
 
   const toggleSideBar = () => setOpenSideBar(!openSideBar);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    console.log(e.target.value);
   };
 
   const showPreview = () => {
