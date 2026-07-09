@@ -4,6 +4,7 @@ import "./index.css";
 import App from "./App.jsx";
 import Post from "./pages/PostPainting.jsx";
 import Profile from "./pages/Profile.jsx";
+import UpdateProfile from "./pages/UpdateProfile.jsx";
 import NotFound from "./components/NotFound.jsx";
 import ThemeProvider from "./context/ThemeProvider.jsx";
 import AuthProvider from "./context/AuthProvider.jsx";
@@ -13,6 +14,7 @@ const router = createBrowserRouter([
   { path: "/", element: <App /> },
   { path: "/post", element: <Post /> },
   { path: "/profile", element: <Profile /> },
+  { path: "/profile/update", element: <UpdateProfile /> },
   { path: "*", element: <NotFound /> },
 ]);
 

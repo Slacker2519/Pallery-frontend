@@ -2,11 +2,12 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { getUser, getUserPaintings, getUserAlbums } from "../api/user";
+import { MdLogout } from "react-icons/md";
 import Sidebar from "../components/Sidebar";
 import PaintingFrame from "../components/PaintingFrame";
 import FocusedPainting from "../components/FocusedPainting";
 import Overlay from "../components/Overlay";
-import { MdLogout } from "react-icons/md";
+import { FaPen } from "react-icons/fa";
 
 const Profile = () => {
   const { user, logout } = useAuth();
@@ -73,14 +74,14 @@ const Profile = () => {
         </button>
         <button
           onClick={handleLogout}
-          className="text-lg px-2 py-2 rounded-lg border border-red-400 text-red-400"
+          className="text-lg px-2 py-2 rounded-lg border-2 border-red-500 text-red-500"
         >
           <MdLogout />
         </button>
       </div>
 
       <div className="px-6 pb-10 flex flex-col gap-8">
-        <section className="flex items-start gap-7 p-5 dark:bg-offDark bg-offLight rounded-lg w-fit shadow-xl dark:shadow-light/10 shadow-dark/20">
+        <section className="flex items-start gap-7 p-5 dark:bg-offDark bg-offLight rounded-lg w-fit">
           <div className="w-20 h-20 rounded-full bg-violet-500 flex items-center justify-center text-2xl text-white font-medium">
             {userInfo?.name?.charAt(0).toUpperCase()}
           </div>
@@ -91,6 +92,12 @@ const Profile = () => {
               Joined {formatDate(userInfo?.createdAt)}
             </p>
           </div>
+          <button
+            onClick={() => navigate("/profile/update")}
+            className="text-sm dark:text-light text-dark"
+          >
+            <FaPen />
+          </button>
         </section>
 
         <hr className="border-gray-300 dark:border-gray-700" />

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Gallery from "./Gallery.jsx";
 import Sidebar from "./Sidebar.jsx";
 import SearchSidebar from "./SearchSidebar.jsx";
@@ -9,9 +10,12 @@ const Body = (props) => {
     searchOpen,
     setSearchOpen,
     searchQuery,
-    setSearchQuery,
     onProtectedNav,
   } = props;
+
+  const [searchSidebarQuery, setSearchSidebarQuery] = useState("");
+
+  const activeQuery = searchQuery || searchSidebarQuery;
 
   return (
     <div className="flex flex-1 overflow-hidden">
@@ -23,11 +27,10 @@ const Body = (props) => {
       <SearchSidebar
         isOpen={searchOpen}
         onClose={() => setSearchOpen(false)}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
+        onSearch={setSearchSidebarQuery}
       />
       <div className="flex-1 overflow-y-auto px-5 pb-5">
-        <Gallery searchQuery={searchQuery} />
+        <Gallery searchQuery={activeQuery} />
       </div>
     </div>
   );

@@ -1,7 +1,17 @@
+import { useState } from "react";
 import SearchBar from "./SearchBar.jsx";
 
 const SearchSidebar = (props) => {
-  const { isOpen, onClose, searchQuery, setSearchQuery } = props;
+  const { isOpen, onClose, onSearch } = props;
+  const [inputValue, setInputValue] = useState("");
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      onSearch(inputValue);
+      onClose();
+      setInputValue("");
+    }
+  };
 
   return (
     <div>
@@ -18,10 +28,12 @@ const SearchSidebar = (props) => {
         </div>
         <div className="flex flex-col justify-center items-center px-4 w-full">
           <SearchBar
+            isHidden={false}
             width="w-full"
             height="h-10"
-            value={searchQuery}
-            onChange={setSearchQuery}
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            onKeyDown={handleKeyDown}
           />
         </div>
       </aside>

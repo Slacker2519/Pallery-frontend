@@ -38,7 +38,6 @@ function App() {
         searchOpen={searchOpen}
         setSearchOpen={setSearchOpen}
         searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
         onProtectedNav={handleProtectedNav}
       />
 
