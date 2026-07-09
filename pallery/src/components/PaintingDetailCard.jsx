@@ -33,7 +33,7 @@ const PaintingDetailCard = (props) => {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const { user } = useAuth();
 
-  const isOwner = user && painting.ownerId === user.userId;
+  const isOwner = user && painting.ownerId === user.id;
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });

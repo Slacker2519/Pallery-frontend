@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 
 const AuthPanel = (props) => {
-  const { isLogin, onSwitch, onSuccess, onClose } = props;
+  const { isLogin, onSwitch, onSuccess } = props;
   const { login, register } = useAuth();
   const [formData, setFormData] = useState({
     name: "",

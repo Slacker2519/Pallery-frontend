@@ -39,6 +39,7 @@ function App() {
         setSearchOpen={setSearchOpen}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
+        onProtectedNav={handleProtectedNav}
       />
 
       {showAuth && !user && (

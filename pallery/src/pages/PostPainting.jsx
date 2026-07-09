@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext.js";
-import { createPainting } from "../../api/painting.js";
-import Sidebar from "../../components/Sidebar.jsx";
-import AnimatedPanel from "../../components/AnimatedPanel.jsx";
+import { useAuth } from "../context/AuthContext.js";
+import { createPainting } from "../api/painting.js";
+import Sidebar from "../components/Sidebar.jsx";
+import AnimatedPanel from "../components/AnimatedPanel.jsx";
 import { FiPlusCircle } from "react-icons/fi";
 
 const PostPainting = () => {

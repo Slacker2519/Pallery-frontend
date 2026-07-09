@@ -12,17 +12,24 @@ const Header = (props) => {
     onToggleSidebar,
     onToggleSearch,
     onSearch,
-    onLoginClick,
     onProtectedNav,
   } = props;
 
   const [inputValue, setInputValue] = useState("");
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   const goToPost = () => {
     if (user) {
       navigate("/post");
+    } else {
+      onProtectedNav();
+    }
+  };
+
+  const goToProfile = () => {
+    if (user) {
+      navigate("/profile");
     } else {
       onProtectedNav();
     }
@@ -59,7 +66,7 @@ const Header = (props) => {
           <div>Add Post</div>
         </button>
 
-        <button className="hidden md:inline-block">
+        <button onClick={goToProfile} className="hidden md:inline-block">
           <i className="fa-solid fa-user text-2xl"></i>
         </button>
 

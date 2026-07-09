@@ -10,11 +10,16 @@ const Body = (props) => {
     setSearchOpen,
     searchQuery,
     setSearchQuery,
+    onProtectedNav,
   } = props;
 
   return (
     <div className="flex flex-1 overflow-hidden">
-      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      <Sidebar
+        isOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+        onProtectedNav={onProtectedNav}
+      />
       <SearchSidebar
         isOpen={searchOpen}
         onClose={() => setSearchOpen(false)}
