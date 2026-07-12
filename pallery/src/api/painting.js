@@ -1,9 +1,4 @@
-import axios from "axios";
-import { DB_URL } from "../constants/index.js";
-
-const api = axios.create({
-  baseURL: DB_URL,
-});
+import api from "./api";
 
 export const getAllPaintings = async () => {
   const res = await api.get("/paintings");

@@ -63,7 +63,7 @@ const Header = (props) => {
           text-light border border-dark dark:border-light bg-violet-500"
         >
           <FaPlus />
-          <div>Add Post</div>
+          <div>Post</div>
         </button>
 
         <button onClick={goToProfile} className="hidden md:inline-block">
