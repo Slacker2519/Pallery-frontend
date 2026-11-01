@@ -1,18 +1,19 @@
 import Overlay from "./Overlay.jsx";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FaHome } from "react-icons/fa";
 import { FaFolderPlus } from "react-icons/fa";
 import { FaUser } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
+import { BiSolidPhotoAlbum } from "react-icons/bi";
 
 const Sidebar = (props) => {
   const { isOpen, onClose, onProtectedNav } = props;
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  const goToPost = () => {
+  const goToPostPainting = () => {
     if (user) {
-      navigate("/post");
+      navigate("/profile/paintings/post");
     } else {
       onProtectedNav();
     }
@@ -21,6 +22,14 @@ const Sidebar = (props) => {
   const goToProfile = () => {
     if (user) {
       navigate("/profile");
+    } else {
+      onProtectedNav();
+    }
+  };
+
+  const goToCreateAlbum = () => {
+    if (user) {
+      navigate("/profile/albums/create");
     } else {
       onProtectedNav();
     }
@@ -55,19 +64,27 @@ const Sidebar = (props) => {
           </button>
 
           <button
-            onClick={goToPost}
-            className="bg-light dark:bg-offDark flex justify-start items-center gap-4 pl-7 w-full hover:text-violet-500 rounded-none"
-          >
-            <FaFolderPlus className="text-xl" />
-            <span className="text-xl">Create</span>
-          </button>
-
-          <button
             onClick={goToProfile}
             className="bg-light dark:bg-offDark flex justify-start items-center gap-4 pl-7 w-full hover:text-violet-500 rounded-none"
           >
             <FaUser className="text-xl" />
             <span className="text-xl">Profile</span>
+          </button>
+
+          <button
+            onClick={goToPostPainting}
+            className="bg-light dark:bg-offDark flex justify-start items-center gap-4 pl-7 w-full hover:text-violet-500 rounded-none"
+          >
+            <FaFolderPlus className="text-xl" />
+            <span className="text-xl">Post Painting</span>
+          </button>
+
+          <button
+            onClick={goToCreateAlbum}
+            className="bg-light dark:bg-offDark flex justify-start items-center gap-4 pl-7 w-full hover:text-violet-500 rounded-none"
+          >
+            <BiSolidPhotoAlbum className="text-xl" />
+            <span className="text-xl">Create Album</span>
           </button>
         </div>
       </aside>

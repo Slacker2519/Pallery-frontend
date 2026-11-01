@@ -21,7 +21,7 @@ const Header = (props) => {
 
   const goToPost = () => {
     if (user) {
-      navigate("/post");
+      navigate("/profile/paintings/post");
     } else {
       onProtectedNav();
     }

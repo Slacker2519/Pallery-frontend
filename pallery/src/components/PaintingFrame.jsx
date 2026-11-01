@@ -1,5 +1,5 @@
 const PaintingFrame = (props) => {
-  const { painting, onClick } = props;
+  const { painting, onClick, actionButton } = props;
 
   return (
     <div>
@@ -11,6 +11,10 @@ const PaintingFrame = (props) => {
           className="painting"
         />
       </button>
+
+      {actionButton && (
+        <div className="absolute top-1 right-1 z-10">{actionButton}</div>
+      )}
     </div>
   );
 };

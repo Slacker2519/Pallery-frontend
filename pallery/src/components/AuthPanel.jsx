@@ -76,7 +76,7 @@ const AuthPanel = (props) => {
           <button
             type="submit"
             disabled={loading}
-            className="border rounded-lg p-2 text-sm"
+            className="border rounded-lg p-2 text-sm bg-violet-500"
           >
             {loading ? "Loading..." : isLogin ? "Login" : "Register"}
           </button>

@@ -3,11 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { getUser, getUserPaintings, getUserAlbums } from "../api/user";
 import { MdLogout } from "react-icons/md";
+import { FaPen } from "react-icons/fa";
 import Sidebar from "../components/Sidebar";
 import PaintingFrame from "../components/PaintingFrame";
 import FocusedPainting from "../components/FocusedPainting";
 import Overlay from "../components/Overlay";
-import { FaPen } from "react-icons/fa";
+import AddPostButton from "../components/AddPostButton";
+import AlbumDefaultCover from "../components/AlbumDefaultCover";
 
 const Profile = () => {
   const { user, logout } = useAuth();
@@ -27,7 +29,9 @@ const Profile = () => {
     if (!user) return;
     const fetchData = async () => {
       try {
-        const [userData, paintingsData, albumsData] = await Promise.all([
+        const [userData,
+          paintingsData,
+          albumsData] = await Promise.all([
           getUser(user.id),
           getUserPaintings(user.id),
           getUserAlbums(user.id),
@@ -59,7 +63,10 @@ const Profile = () => {
 
   if (loading)
     return (
-      <div className="w-full min-h-screen flex items-center justify-center dark:bg-dark dark:text-light">
+      <div
+        className="w-full min-h-screen flex items-center justify-center
+        dark:bg-dark dark:text-light"
+      >
         Loading...
       </div>
     );
@@ -81,8 +88,12 @@ const Profile = () => {
       </div>
 
       <div className="px-6 pb-10 flex flex-col gap-8">
+        {/*user info card------------------------------------------------------------------------------------------------*/}
         <section className="flex items-start gap-7 p-5 dark:bg-offDark bg-offLight rounded-lg w-fit">
-          <div className="w-20 h-20 rounded-full bg-violet-500 flex items-center justify-center text-2xl text-white font-medium">
+          <div
+            className="w-20 h-20 rounded-full bg-violet-500 flex items-center justify-center
+            text-2xl text-white font-medium"
+          >
             {userInfo?.name?.charAt(0).toUpperCase()}
           </div>
           <div>
@@ -100,49 +111,62 @@ const Profile = () => {
           </button>
         </section>
 
-        <hr className="border-gray-300 dark:border-gray-700" />
+        <hr className="border-gray-300 dark:border-gray-600" />
 
+        {/*user's album section------------------------------------------------------------------------------------------*/}
         <section>
           <h2 className="text-lg font-medium mb-4">Albums ({albums.length})</h2>
-          {albums.length === 0 ? (
-            <p className="text-sm text-gray-500">No albums yet</p>
-          ) : (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {albums.map((album) => (
-                <div
-                  key={album._id}
-                  className="border rounded-lg p-4 flex flex-col gap-2 cursor-pointer
-                            hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                >
-                  <p className="font-medium text-sm">{album.name}</p>
-                  <p className="text-xs text-gray-500">
-                    {album.paintingIds?.length || 0} paintings
-                  </p>
-                </div>
-              ))}
+
+          <div className="gallery">
+            <div className="break-inside-avoid mb-2">
+              <AddPostButton onClick={() => navigate("/profile/albums/create")} />
             </div>
-          )}
+
+            {albums.map((album) => {
+              const albumPaintings = (album.paintingIds || [])
+                  .map((id) => paintings.find((p) => p._id === id))
+                  .filter(Boolean);
+              return (
+                  <button
+                      key={album._id}
+                      // onClick={() => navigate(`/profile/albums/${album._id}`)}
+                      className="break-inside-avoid mb-2 cursor-pointer"
+                  >
+                    <div className="aspect-square rounded-lg overflow-hidden bg-gray-200 dark:bg-gray-700">
+                      {album.coverUrl ? (
+                          <img src={album.coverUrl} alt={album.name} className="w-full h-full object-cover" />
+                      ) : (
+                          <AlbumDefaultCover paintings={albumPaintings} />
+                      )}
+                    </div>
+                  </button>
+              );
+            })}
+          </div>
         </section>
 
-        <hr className="border-gray-300 dark:border-gray-700" />
+        <hr className="border-gray-300 dark:border-gray-600" />
 
+        {/*user's paintings section--------------------------------------------------------------------------------------*/}
         <section>
           <h2 className="text-lg font-medium mb-4">
             Paintings ({paintings.length})
           </h2>
-          {paintings.length === 0 ? (
-            <p className="text-sm text-gray-500">No paintings yet</p>
-          ) : (
-            <div className="gallery">
-              {paintings.map((painting) => (
-                <PaintingFrame
-                  key={painting._id}
-                  painting={painting}
-                  onClick={() => setSelectedPainting(painting)}
-                />
-              ))}
+
+          <div className="gallery">
+            <div className="break-inside-avoid mb-2">
+              <AddPostButton
+                onClick={() => navigate("/profile/paintings/post")}
+              />
             </div>
-          )}
+            {paintings.map((painting) => (
+              <PaintingFrame
+                key={painting._id}
+                painting={painting}
+                onClick={() => setSelectedPainting(painting)}
+              />
+            ))}
+          </div>
         </section>
       </div>
 
