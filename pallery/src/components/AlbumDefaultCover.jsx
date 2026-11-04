@@ -3,12 +3,7 @@ const AlbumDefaultCover = (props) => {
   const [first, second, third] = paintings;
 
   if (!first)
-    return (
-      <div
-        className="w-full h-full flex items-center justify-center
-      text-gray-400 text-sm text-center px-4"
-      ></div>
-    );
+      return <div className="w-full h-full bg-offLight dark:bg-offDark" />;
 
   return (
     <div className="w-full h-full flex">
@@ -27,7 +22,7 @@ const AlbumDefaultCover = (props) => {
               className="w-full h-full object-cover"
             />
           ) : (
-            <div className="w-full h-full bg-gray-200 dark:bg-gray-700" />
+            <div className="w-full h-full bg-offLight dark:bg-offDark" />
           )}
         </div>
 
@@ -39,7 +34,7 @@ const AlbumDefaultCover = (props) => {
               className="w-full h-full object-cover"
             />
           ) : (
-            <div className="w-full h-full bg-gray-200 dark:bg-gray-700" />
+            <div className="w-full h-full bg-offLight dark:bg-offDark" />
           )}
         </div>
       </div>

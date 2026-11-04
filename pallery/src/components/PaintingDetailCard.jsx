@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import Overlay from "./Overlay.jsx";
 import TagCard from "./TagCard.jsx";
 import SafeLink from "./SafeLink.jsx";
@@ -8,6 +9,8 @@ import { FaPen } from "react-icons/fa";
 import { FaSave } from "react-icons/fa";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext.js";
+import { FaUserCircle } from "react-icons/fa";
+import { getUser } from "../api/user";
 
 const PaintingDetailCard = (props) => {
   const {
@@ -18,6 +21,8 @@ const PaintingDetailCard = (props) => {
     onDelete,
     isMobile = false,
   } = props;
+
+  const [poster, setPoster] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     name: painting.name || "",
@@ -34,6 +39,18 @@ const PaintingDetailCard = (props) => {
   const { user } = useAuth();
 
   const isOwner = user && painting.ownerId === user.id;
+
+  useEffect(() => {
+    let ignore = false;
+    getUser(painting.ownerId)
+        .then((data) => {
+          if (!ignore) setPoster(data.user);
+        })
+        .catch(() => {});
+    return () => {
+      ignore = true;
+    };
+  }, [painting.ownerId]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -242,6 +259,16 @@ const PaintingDetailCard = (props) => {
               day: "numeric",
             })}
           </div>
+        )}
+
+        {poster && (
+            <Link
+                to={isOwner ? "/profile" : `/users/${painting.ownerId}`}
+                className="mt-auto flex items-center gap-2 self-start pr-10 mb-2"
+            >
+              <FaUserCircle className="text-2xl shrink-0" />
+              <span className="truncate">{poster.name}</span>
+            </Link>
         )}
 
         {error && <p className="text-red-500 text-xl mt-2">{error}</p>}

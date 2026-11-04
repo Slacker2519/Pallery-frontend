@@ -10,7 +10,7 @@ const UnsavedPrompt = ({ onStay, onLeave, onSaveAndLeave, loading }) => createPo
 
                 {/* header */}
                 <div className="flex justify-between items-start">
-                    <p className="font-medium text-sm">Do you want to save this album?</p>
+                    <p className="font-medium text-sm text-dark dark:text-light">Do you want to save this album?</p>
                     <button onClick={onStay} className="text-gray-400 hover:text-gray-600 border-none p-0 ml-2">
                         <FaXmark />
                     </button>
@@ -22,7 +22,7 @@ const UnsavedPrompt = ({ onStay, onLeave, onSaveAndLeave, loading }) => createPo
                 <div className="flex justify-end gap-2">
                     <button
                         onClick={onLeave}
-                        className="text-sm px-4 py-1.5 rounded-lg border"
+                        className="text-sm text-red-500 px-4 py-1.5 rounded-lg border border-red-500"
                     >
                         No
                     </button>

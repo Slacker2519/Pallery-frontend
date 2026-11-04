@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { getUser, getUserPaintings, getUserAlbums } from "../api/user";
@@ -14,6 +15,10 @@ import AlbumDefaultCover from "../components/AlbumDefaultCover";
 const Profile = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const { id } = useParams();
+  const profileId = id || user?.id;
+  const isOwner = user && profileId === user.id;
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
   const [paintings, setPaintings] = useState([]);
@@ -22,19 +27,20 @@ const Profile = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!user) navigate("/");
-  }, [user, navigate]);
+    if (!id && !user) navigate("/");
+  }, [id, user, navigate]);
 
   useEffect(() => {
-    if (!user) return;
+    if (!profileId) return;
+
     const fetchData = async () => {
       try {
         const [userData,
           paintingsData,
           albumsData] = await Promise.all([
-          getUser(user.id),
-          getUserPaintings(user.id),
-          getUserAlbums(user.id),
+          getUser(profileId),
+          getUserPaintings(profileId),
+          getUserAlbums(profileId),
         ]);
         setUserInfo(userData.user);
         setPaintings(paintingsData.paintings);
@@ -46,7 +52,7 @@ const Profile = () => {
       }
     };
     fetchData();
-  }, [user]);
+  }, [profileId]);
 
   const handleLogout = () => {
     logout();
@@ -56,7 +62,7 @@ const Profile = () => {
   const formatDate = (date) => {
     return new Date(date).toLocaleDateString("en-US", {
       year: "numeric",
-      moth: "long",
+      month: "long",
       day: "numeric",
     });
   };
@@ -79,12 +85,14 @@ const Profile = () => {
         <button onClick={() => setSidebarOpen(true)}>
           <i className="fa-solid fa-bars text-xl" />
         </button>
-        <button
-          onClick={handleLogout}
-          className="text-lg px-2 py-2 rounded-lg border-2 border-red-500 text-red-500"
-        >
-          <MdLogout />
-        </button>
+        {isOwner &&
+            <button
+              onClick={handleLogout}
+              className="text-lg px-2 py-2 rounded-lg border-2 border-red-500 text-red-500"
+            >
+              <MdLogout />
+            </button>
+        }
       </div>
 
       <div className="px-6 pb-10 flex flex-col gap-8">
@@ -98,17 +106,19 @@ const Profile = () => {
           </div>
           <div>
             <h1 className="text-2xl font-medium">{userInfo?.name}</h1>
-            <p className="text-sm text-gray-400">{userInfo?.email}</p>
+            {userInfo?.email && <p className="text-sm text-gray-400">{userInfo?.email}</p>}
             <p className="text-sm text-gray-400">
               Joined {formatDate(userInfo?.createdAt)}
             </p>
           </div>
-          <button
-            onClick={() => navigate("/profile/update")}
-            className="text-sm dark:text-light text-dark"
-          >
-            <FaPen />
-          </button>
+          {isOwner &&
+            <button
+              onClick={() => navigate("/profile/update")}
+              className="text-sm dark:text-light text-dark"
+            >
+              <FaPen />
+            </button>
+          }
         </section>
 
         <hr className="border-gray-300 dark:border-gray-600" />
@@ -118,28 +128,32 @@ const Profile = () => {
           <h2 className="text-lg font-medium mb-4">Albums ({albums.length})</h2>
 
           <div className="gallery">
-            <div className="break-inside-avoid mb-2">
-              <AddPostButton onClick={() => navigate("/profile/albums/create")} />
-            </div>
+            {isOwner &&
+              <div className="break-inside-avoid mb-2">
+                <AddPostButton onClick={() => navigate("/profile/albums/create")} />
+              </div>
+            }
 
             {albums.map((album) => {
+              const coverPainting = paintings.find((p) => p._id === album.coverPaintingId);
               const albumPaintings = (album.paintingIds || [])
                   .map((id) => paintings.find((p) => p._id === id))
                   .filter(Boolean);
               return (
-                  <button
-                      key={album._id}
-                      // onClick={() => navigate(`/profile/albums/${album._id}`)}
-                      className="break-inside-avoid mb-2 cursor-pointer"
-                  >
-                    <div className="aspect-square rounded-lg overflow-hidden bg-gray-200 dark:bg-gray-700">
-                      {album.coverUrl ? (
-                          <img src={album.coverUrl} alt={album.name} className="w-full h-full object-cover" />
-                      ) : (
-                          <AlbumDefaultCover paintings={albumPaintings} />
-                      )}
-                    </div>
-                  </button>
+                  <div key={album._id} className="break-inside-avoid mb-2">
+                    <button
+                        onClick={() => navigate(`/profile/albums/${album._id}`)}
+                        className="block w-full cursor-pointer"
+                    >
+                      <div className="aspect-square rounded-lg overflow-hidden bg-offLight dark:bg-offDark">
+                        {coverPainting ? (
+                            <img src={coverPainting.url} alt={album.name} className="w-full h-full object-cover" />
+                        ) : (
+                            <AlbumDefaultCover paintings={albumPaintings} />
+                        )}
+                      </div>
+                    </button>
+                  </div>
               );
             })}
           </div>
@@ -154,11 +168,13 @@ const Profile = () => {
           </h2>
 
           <div className="gallery">
-            <div className="break-inside-avoid mb-2">
-              <AddPostButton
-                onClick={() => navigate("/profile/paintings/post")}
-              />
-            </div>
+            {isOwner &&
+              <div className="break-inside-avoid mb-2">
+                <AddPostButton
+                  onClick={() => navigate("/profile/paintings/post")}
+                />
+              </div>
+            }
             {paintings.map((painting) => (
               <PaintingFrame
                 key={painting._id}
