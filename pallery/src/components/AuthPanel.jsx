@@ -36,7 +36,7 @@ const AuthPanel = (props) => {
 
   return (
     <div className="fixed top-0 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 ease-in-out translate-y-[20vh]">
-      <div className="bg-light dark:bg-dark border rounded-lg shadow-lg p-6 w-80 flex flex-col gap-4">
+      <div className="bg-light dark:bg-dark border rounded-lg shadow-lg p-6 w-80 flex flex-col gap-4 text-dark dark:text-light">
         <h2 className="text-lg font-medium text-center">
           {isLogin ? "Login" : "Register"}
         </h2>
@@ -76,7 +76,7 @@ const AuthPanel = (props) => {
           <button
             type="submit"
             disabled={loading}
-            className="border rounded-lg p-2 text-sm bg-violet-500"
+            className="border rounded-lg p-2 text-sm bg-violet-500 text-light"
           >
             {loading ? "Loading..." : isLogin ? "Login" : "Register"}
           </button>

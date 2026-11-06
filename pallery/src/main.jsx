@@ -8,6 +8,7 @@ import UpdateProfile from "./pages/UpdateProfile.jsx";
 import NotFound from "./components/NotFound.jsx";
 import ThemeProvider from "./context/ThemeProvider.jsx";
 import AuthProvider from "./context/AuthProvider.jsx";
+import AuthModalProvider from "./context/AuthModalProvider.jsx";
 import CreateAlbum from "./pages/CreateAlbum.jsx";
 import AlbumPage from "./pages/AlbumPage.jsx";
 import EditAlbum from "./pages/EditAlbum.jsx";
@@ -29,7 +30,9 @@ createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ThemeProvider>
       <AuthProvider>
-        <RouterProvider router={router} />
+        <AuthModalProvider>
+          <RouterProvider router={router} />
+        </AuthModalProvider>
       </AuthProvider>
     </ThemeProvider>
   </StrictMode>,

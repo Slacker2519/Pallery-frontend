@@ -7,6 +7,7 @@ import AlbumDefaultCover from "../components/AlbumDefaultCover.jsx";
 import CoverPicker from "../components/CoverPicker";
 import { createAlbum, updateAlbum, getAlbum, deleteAlbum } from "../api/album";
 import { FiPlusCircle, FiMinusCircle, FiChevronLeft } from "react-icons/fi";
+import { FaRegTrashAlt } from "react-icons/fa";
 import { getUserPaintings } from "../api/user.js";
 import UnsavedPrompt from "../components/UnsavedPrompt.jsx";
 import DeleteAlbumPrompt from "../components/DeleteAlbumPrompt.jsx";
@@ -266,7 +267,7 @@ const CreateAlbum = ({ albumId = null }) => {
               <i className="fa-solid fa-bars text-xl" />
             </button>
         )}
-        {currentId && (
+        {albumId && (
             <Link
                 to={`/profile/albums/${currentId}`}
                 aria-label="Back to album"
@@ -278,10 +279,21 @@ const CreateAlbum = ({ albumId = null }) => {
       </div>
 
       {/*Details card-------------------------------------------------------------------------------------------------*/}
-      <div className="flex flex-col gap-4 bg-light dark:bg-dark text-dark dark:text-light border border-dark
+      <div className="relative flex flex-col gap-4 bg-light dark:bg-dark text-dark dark:text-light border border-dark
       dark:border-light rounded-xl p-4 w-[95%] md:w-1/3 xl:w-1/3 mx-auto"
       >
-        <div className="flex flex-col lg:flex-row gap-4 items-center mb-4">
+        <div className="flex flex-col lg:flex-row gap-4 items-center mb-4 text-lg">
+
+          {/*Delete button--------------------------------------------------------------------------------------------*/}
+          {albumId && (
+              <button
+                  onClick={() => setShowDelete(true)}
+                  aria-label="Delete album"
+                  className="absolute top-3 right-3 text-red-500 text-lg"
+              >
+                <FaRegTrashAlt />
+              </button>
+          )}
 
           {/*Album cover----------------------------------------------------------------------------------------------*/}
           <div className="flex flex-col gap-2 w-full max-w-[200px] lg:w-36 shrink-0 mx-auto lg:mx-0">
@@ -355,19 +367,6 @@ const CreateAlbum = ({ albumId = null }) => {
             {saving ? "Saving..." : "Save"}
           </button>
         </div>
-
-        {albumId && (
-            <>
-              <hr className="border-dark/20 dark:border-light/20" />
-              <button
-                  onClick={() => setShowDelete(true)}
-                  className="self-start text-sm border border-red-500 text-red-500
-                  hover:bg-red-500 hover:text-white transition-colors"
-              >
-                Delete album
-              </button>
-            </>
-        )}
       </div>
 
       <hr className="border-gray-300 dark:border-gray-600 mt-10 mb-3 mx-8" />

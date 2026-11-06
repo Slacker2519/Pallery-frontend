@@ -104,6 +104,17 @@ const AlbumPage = () => {
                 </button>
             </div>
 
+            {visiblePaintings.length === 0 && (
+                <p className="text-sm text-gray-400">
+                    {paintings.length === 0
+                        ? isOwner
+                            ? "No paintings in this album yet."
+                            : "No public paintings in this album."
+                        :"No paintings found"
+                    }
+                </p>
+            )}
+
             <div className="px-6 pb-10 flex flex-col gap-8">
                 {/*Details card---------------------------------------------------------------------------------------*/}
                 <section className="relative flex gap-5 p-5 pr-14 dark:bg-offDark bg-offLight rounded-lg

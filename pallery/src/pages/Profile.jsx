@@ -83,7 +83,7 @@ const Profile = () => {
 
       <div className="flex justify-between items-center px-4 py-3">
         <button onClick={() => setSidebarOpen(true)}>
-          <i className="fa-solid fa-bars text-xl" />
+          <i className="fa-solid fa-bars text-2xl" />
         </button>
         {isOwner &&
             <button

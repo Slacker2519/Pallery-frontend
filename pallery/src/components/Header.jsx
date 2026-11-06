@@ -4,6 +4,7 @@ import { FiSun, FiMoon } from "react-icons/fi";
 import { FaPlus } from "react-icons/fa";
 import SearchBar from "./SearchBar.jsx";
 import { useAuth } from "../context/AuthContext";
+import { useAuthModal } from "../context/AuthModalContext.js";
 
 const Header = (props) => {
   const {
@@ -12,18 +13,18 @@ const Header = (props) => {
     onToggleSidebar,
     onToggleSearch,
     onSearch,
-    onProtectedNav,
   } = props;
 
   const [inputValue, setInputValue] = useState("");
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { openAuth } = useAuthModal();
 
   const goToPost = () => {
     if (user) {
       navigate("/profile/paintings/post");
     } else {
-      onProtectedNav();
+      openAuth();
     }
   };
 
@@ -31,7 +32,7 @@ const Header = (props) => {
     if (user) {
       navigate("/profile");
     } else {
-      onProtectedNav();
+      openAuth();
     }
   };
 
