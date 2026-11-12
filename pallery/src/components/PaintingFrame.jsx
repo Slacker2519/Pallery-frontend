@@ -3,12 +3,12 @@ const PaintingFrame = (props) => {
 
   return (
     <div>
-      <button onClick={onClick} className="mb-1">
+      <button onClick={onClick} className="mb-1 block w-full">
         <img
           id={painting.id}
           src={painting.url}
           alt={painting.name}
-          className="painting"
+          className="painting w-full h-auto"
         />
       </button>
 

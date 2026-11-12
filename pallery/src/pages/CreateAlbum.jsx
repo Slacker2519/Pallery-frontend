@@ -11,6 +11,8 @@ import { FaRegTrashAlt } from "react-icons/fa";
 import { getUserPaintings } from "../api/user.js";
 import UnsavedPrompt from "../components/UnsavedPrompt.jsx";
 import DeleteAlbumPrompt from "../components/DeleteAlbumPrompt.jsx";
+import { useMissingFieldFlash } from "../hooks/useMissingFieldFlash";
+import { glowBorder } from "../utils/formGlow";
 
 const CreateAlbum = ({ albumId = null }) => {
   const INITIAL_FORM = {
@@ -44,7 +46,6 @@ const CreateAlbum = ({ albumId = null }) => {
   const [allPaintings, setAllPaintings] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchInput, setSearchInput] = useState("");
-  const [saveStatus, setSaveStatus] = useState("");
   const [saving, setSaving] = useState(false);
   const [coverPaintingId, setCoverPaintingId] = useState(null);
   const [showCoverPicker, setShowCoverPicker] = useState(false);
@@ -53,10 +54,19 @@ const CreateAlbum = ({ albumId = null }) => {
   const [savedSnapshot, setSavedSnapshot] = useState(() =>
       buildSnapshot(INITIAL_FORM, [], null),
   );
+  const [justSaved, setJustSaved] = useState(false);
+  const [attempted, setAttempted] = useState(false);
+  const { flash, flashClass, onFlashEnd } = useMissingFieldFlash();
+
   const isDirty = buildSnapshot(formData, addedPaintings, coverPaintingId) !== savedSnapshot;
-
-  // const statusText = saveStatus === "Saved" && isDirty ? "" : saveStatus;
-
+  const missing = formData.name.trim()
+      ? []
+      : [{ field: name, message: "Give your album a name" }];
+  const isReady = isDirty && missing.length === 0;
+  const glow = isDirty ? "dirty" : justSaved ? "success" : "none";
+  const errorFor = (field) =>
+      attempted ? (missing.find((m) => m.field === field)?.message ?? null) : null;
+  const showCreatedActions = !albumId && currentId && justSaved && !isDirty;
   const blocker = useBlocker(() => isDirty && !allowLeaveRef.current);
 
   useEffect(() => {
@@ -122,14 +132,14 @@ const CreateAlbum = ({ albumId = null }) => {
   }, [isDirty]);
 
   const saveAlbum = useCallback(async () => {
-    if (!formData.name) {
-      setSaveStatus("Failed to save: name is required");
+    if (!formData.name.trim()) {
+      setAttempted(true);
+      flash(["name"]);
       return false;
     }
 
     const snapshot = buildSnapshot(formData, addedPaintings, coverPaintingId);
     setSaving(true);
-    setSaveStatus("Saving...");
     try {
       const data = {
         name: formData.name,
@@ -145,10 +155,10 @@ const CreateAlbum = ({ albumId = null }) => {
         setCurrentId(res.album._id);
       }
       setSavedSnapshot(snapshot);
-      setSaveStatus("Saved ✓");
+      setJustSaved(true);
+      setAttempted(false);
       return true;
     } catch {
-      setSaveStatus("Failed to save");
       return false;
     } finally {
       setSaving(false);
@@ -156,16 +166,18 @@ const CreateAlbum = ({ albumId = null }) => {
   }, [formData, addedPaintings, coverPaintingId, currentId]);
 
   const handleChange = (e) => {
+    setJustSaved(false);
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    setSaveStatus("");
   };
 
   const handleAddPainting = (painting) => {
+    setJustSaved(false);
     if (addedPaintings.find((p) => p._id === painting._id)) return;
     setAddedPaintings([...addedPaintings, painting]);
   };
 
   const handleRemovePainting = (painting) => {
+    setJustSaved(false);
     setAddedPaintings(addedPaintings.filter((p) => p._id !== painting._id));
     if (painting._id === coverPaintingId) setCoverPaintingId(null);
   };
@@ -180,14 +192,28 @@ const CreateAlbum = ({ albumId = null }) => {
       console.log(e);
       setDeleting(false);
       setShowDelete(false);
-      setSaveStatus("Failed to delete");
     }
   };
 
   const handleSelectCover = (id) => {
+    setJustSaved(false);
     setCoverPaintingId(id);
     setShowCoverPicker(false);
   };
+
+  const handleSaveClick = () => {
+    if (isReady || missing.length > 0) saveAlbum();
+  };
+
+  const handleCreateAnother = () => {
+    setCurrentId(null);
+    setFormData(INITIAL_FORM);
+    setAddedPaintings([]);
+    setCoverPaintingId(null);
+    setSavedSnapshot(buildSnapshot(INITIAL_FORM, [], null));
+    setJustSaved(false);
+    setAttempted(false);
+  }
 
   if (forbidden) return <Navigate to={`/profile/albums/${albumId}`} replace />;
 
@@ -279,8 +305,9 @@ const CreateAlbum = ({ albumId = null }) => {
       </div>
 
       {/*Details card-------------------------------------------------------------------------------------------------*/}
-      <div className="relative flex flex-col gap-4 bg-light dark:bg-dark text-dark dark:text-light border border-dark
-      dark:border-light rounded-xl p-4 w-[95%] md:w-1/3 xl:w-1/3 mx-auto"
+      <div className={`relative flex flex-col gap-4 bg-light dark:bg-dark text-dark dark:text-light
+        border rounded-xl p-4 w-[95%] md:w-1/3 xl:w-1/3 mx-auto transition-[border-color,box-shadow] 
+        duration-300 ${glowBorder(glow)}`}
       >
         <div className="flex flex-col lg:flex-row gap-4 items-center mb-4 text-lg">
 
@@ -316,10 +343,15 @@ const CreateAlbum = ({ albumId = null }) => {
           {/* name----------------------------------------------------------------------------------------------------*/}
           <div className="flex flex-col gap-1 w-full lg:flex-1">
             <label className="text-xs text-dark dark:text-light uppercase tracking-wide">Name</label>
-            <input type="text" name="name" value={formData.name}
+            <input type="text" name="name" value={formData.name} data-field="name"
                    placeholder="Album Name"
                    onChange={handleChange}
-                   className={`${inputClass} text-base md:text-lg font-medium`} />
+                   onAnimationEnd={() => onFlashEnd("name")}
+                   className={`${inputClass} text-base md:text-lg font-medium ${flashClass("name")}`}
+            />
+            {errorFor("name") && (
+                <p className="text-xs text-red-500">{errorFor("name")}</p>
+            )}
             <p className="text-xs text-dark dark:text-light mt-1">
               {addedPaintings.length} painting{addedPaintings.length !== 1 ? "s" : ""}
             </p>
@@ -356,16 +388,40 @@ const CreateAlbum = ({ albumId = null }) => {
             </select>
           </div>
 
-          <button
-              onClick={saveAlbum}
-              disabled={saving || !isDirty}
-              className="text-sm px-5 py-2 rounded-lg shrink-0 border-none bg-violet-500 text-white
-              transition-colors hover:bg-violet-600
-              disabled:bg-violet-500/30 disabled:text-white/50 disabled:cursor-not-allowed
-              disabled:hover:bg-violet-500/30 disabled:hover:shadow-none"
-          >
-            {saving ? "Saving..." : "Save"}
-          </button>
+          {/*Save button----------------------------------------------------------------------------------------------*/}
+          {!showCreatedActions && (
+              <button
+                  onClick={handleSaveClick}
+                  disabled={saving}
+                  aria-disabled={!isReady}
+                  className={`text-sm px-5 py-2 rounded-lg shrink-0 border-none transition-colors
+                  ${isReady
+                      ? "bg-violet-500 text-white hover:bg-violet-600"
+                      : "bg-violet-500/30 text-white/50 cursor-not-allowed hover:shadow-none"}`}
+              >
+                {saving ? "Saving..." : "Save"}
+              </button>
+          )}
+
+          {showCreatedActions && (
+              <div className="flex flex-col gap-2">
+                <p className="text-sm text-green-500">Album created ✓</p>
+                <div className="flex gap-2">
+                  <button
+                      onClick={handleCreateAnother}
+                      className="flex-1 text-sm border border-dark dark:border-light"
+                  >
+                    Create another
+                  </button>
+                  <button
+                      onClick={() => navigate(`/profile/albums/${currentId}`)}
+                      className="flex-1 text-sm border-none bg-violet-500 text-white hover:bg-violet-600"
+                  >
+                    Go to album
+                  </button>
+                </div>
+              </div>
+          )}
         </div>
       </div>
 
