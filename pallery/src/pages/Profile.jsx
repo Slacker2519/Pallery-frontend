@@ -98,12 +98,19 @@ const Profile = () => {
       <div className="px-6 pb-10 flex flex-col gap-8">
         {/*user info card------------------------------------------------------------------------------------------------*/}
         <section className="flex items-start gap-7 p-5 dark:bg-offDark bg-offLight rounded-lg w-fit">
-          <div
-            className="w-20 h-20 rounded-full bg-violet-500 flex items-center justify-center
-            text-2xl text-white font-medium"
-          >
-            {userInfo?.name?.charAt(0).toUpperCase()}
-          </div>
+          {userInfo?.avatarUrl ? (
+              <img
+                  src={userInfo.avatarUrl}
+                  alt={userInfo.name}
+                  className="w-20 h-20 rounded-full object-cover"
+              />
+          ) : (
+              <div className="w-20 h-20 rounded-full bg-violet-500 flex items-center justify-center text-2xl
+                text-white font-medium"
+              >
+                {userInfo?.name?.charAt(0).toUpperCase()}
+              </div>
+          )}
           <div>
             <h1 className="text-2xl font-medium">{userInfo?.name}</h1>
             {userInfo?.email && <p className="text-sm text-gray-400">{userInfo?.email}</p>}

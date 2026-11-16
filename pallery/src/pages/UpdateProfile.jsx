@@ -1,23 +1,28 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useAuth } from "../context/AuthContext.js";
 import { useNavigate } from "react-router-dom";
 import { getUser, updateUser } from "../api/user.js";
 import Sidebar from "../components/Sidebar.jsx";
 import { IoChevronBack } from "react-icons/io5";
+import { FiCamera } from "react-icons/fi";
 
 const UpdateProfile = () => {
   const { user, setUser } = useAuth();
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
+  const fileInputRef = useRef(null);
+  const [avatarUrl, setAvatarUrl] = useState("");
+  const [avatarFile, setAvatarFile] = useState(null);
+  const [avatarPreview, setAvatarPreview] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     if (!user) navigate("/");
@@ -33,6 +38,7 @@ const UpdateProfile = () => {
           name: res.user.name || "",
           email: res.user.email || "",
         }));
+        setAvatarUrl(res.user.avatarUrl || "");
       } catch (err) {
         console.log(err);
       }
@@ -44,42 +50,51 @@ const UpdateProfile = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError(null);
-    setSuccess(false);
+  const handleAvatarClick = () => {
+    fileInputRef.current.value = ""; // lets the same file be picked again
+    fileInputRef.current.click();
+  };
 
-    if (formData.password && formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match");
+  const handleAvatarChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      setError("Please choose an image file");
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      setError("Profile picture must be under 5 MB");
       return;
     }
 
-    setLoading(true);
-    try {
-      const updateData = {
-        name: formData.name,
-        email: formData.email,
-      };
+    if (avatarPreview) URL.revokeObjectURL(avatarPreview);
+    setAvatarFile(file);
+    setAvatarPreview(URL.createObjectURL(file));
+    setError(null);
+    setSuccess(false);
+  };
 
-      if (formData.password) {
-        updateData.password = formData.password;
-      }
+  const handleSubmit = async (e) => {
+    const data = new FormData();
+    data.append("name", formData.name);
+    data.append("email", formData.email);
+    if (formData.password) data.append("password", formData.password);
+    if (avatarFile) data.append("avatar", avatarFile);
 
-      const res = await updateUser(user.id, updateData);
+    const res = await updateUser(user.id, data);
 
-      setUser((prev) => ({
-        ...prev,
-        name: res.user.name,
-        email: res.user.email,
-      }));
+    setUser((prev) => ({
+      ...prev,
+      name: res.user.name,
+      email: res.user.email,
+      avatarUrl: res.user.avatarUrl,
+    }));
 
-      setSuccess(true);
-      setFormData((prev) => ({ ...prev, password: "", confirmPassword: "" }));
-    } catch (err) {
-      setError(err.response?.data?.msg || "Something went wrong");
-    } finally {
-      setLoading(false);
-    }
+    setAvatarUrl(res.user.avatarUrl || "");
+    if (avatarPreview) URL.revokeObjectURL(avatarPreview);
+    setAvatarFile(null);
+    setAvatarPreview(null);
   };
 
   const inputClass =
@@ -112,17 +127,42 @@ const UpdateProfile = () => {
         )}
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-          <div className="flex items-center gap-4 mb-2">
-            <div
-              className="w-16 h-16 rounded-full bg-violet-500 flex items-center
-              justify-center text-2xl text-white font-medium shrink-0"
+          <div className="self-start">
+            <button
+                type="button"
+                onClick={handleAvatarClick}
+                aria-label="Change profile picture"
+                className="group relative block w-16 h-16 rounded-full overflow-hidden p-0"
             >
-              {formData.name?.charAt(0).toUpperCase()}
-            </div>
-            <div>
-              <p className="text-sm font-medium">{formData.name}</p>
-              <p className="text-xs text-gray-500">{formData.email}</p>
-            </div>
+              {avatarPreview || avatarUrl ? (
+                  <img
+                      src={avatarPreview || avatarUrl}
+                      alt=""
+                      className="w-full h-full object-cover"
+                  />
+              ) : (
+                  <div className="w-full h-full bg-violet-500 flex items-center justify-center text-2xl text-white font-medium">
+                    {formData.name?.charAt(0).toUpperCase()}
+                  </div>
+              )}
+
+              <span
+                  className="absolute inset-0 flex items-center justify-center bg-black/50 text-white/90
+                  text-xl pointer-events-none transition-opacity
+                  [@media(hover:hover)]:opacity-0
+                  [@media(hover:hover)]:group-hover:opacity-100"
+              >
+                <FiCamera />
+              </span>
+            </button>
+
+            <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleAvatarChange}
+                className="hidden"
+            />
           </div>
 
           <hr className="border-gray-300 dark:border-gray-700" />

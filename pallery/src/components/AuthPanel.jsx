@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useAuth } from "../context/AuthContext";
+import { FiCamera } from "react-icons/fi";
 
 const AuthPanel = (props) => {
   const { isLogin, onSwitch, onSuccess } = props;
@@ -11,9 +12,41 @@ const AuthPanel = (props) => {
   });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const fileInputRef = useRef(null);
+  const [avatarFile, setAvatarFile] = useState(null);
+  const [avatarPreview, setAvatarPreview] = useState(null);
+
+  useEffect(() => {
+    return () => {
+      if (avatarPreview) URL.revokeObjectURL(avatarPreview);
+    };
+  }, [avatarPreview]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleAvatarClick = () => {
+    fileInputRef.current.value = ""; // lets the same file be picked again
+    fileInputRef.current.click();
+  };
+
+  const handleAvatarChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      setError("Please choose an image file");
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      setError("Profile picture must be under 5 MB");
+      return;
+    }
+
+    setError(null);
+    setAvatarFile(file);
+    setAvatarPreview(URL.createObjectURL(file));
   };
 
   const handleSubmit = async (e) => {
@@ -24,7 +57,12 @@ const AuthPanel = (props) => {
       if (isLogin) {
         await login({ email: formData.email, password: formData.password });
       } else {
-        await register(formData);
+        const data = new FormData();
+        data.append("name", formData.name);
+        data.append("email", formData.email);
+        data.append("password", formData.password);
+        if (avatarFile) data.append("avatar", avatarFile);
+        await register(data);
       }
       onSuccess();
     } catch (error) {
@@ -45,15 +83,43 @@ const AuthPanel = (props) => {
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
           {!isLogin && (
-            <input
-              type="text"
-              name="name"
-              placeholder="Name"
-              value={formData.name}
-              onChange={handleChange}
-              className="border rounded-xl p-2 bg-transparent text-sm"
-              required
-            />
+              <div className="flex flex-col items-center gap-1">
+                <button
+                    type="button"
+                    onClick={handleAvatarClick}
+                    aria-label="Choose a profile picture"
+                    className="group relative block w-20 h-20 rounded-full overflow-hidden p-0
+                    bg-dark text-light border border-light/40"
+                >
+                  {avatarPreview ? (
+                      <>
+                        <img src={avatarPreview} alt="" className="w-full h-full object-cover" />
+                        <span
+                            className="absolute inset-0 flex items-center justify-center bg-black/30
+                            text-white/90 text-xl pointer-events-none transition-opacity
+                            [@media(hover:hover)]:opacity-0
+                            [@media(hover:hover)]:group-hover:opacity-100"
+                        >
+                          <FiCamera />
+                        </span>
+                      </>
+                  ) : (
+                      <span className="flex items-center justify-center w-full h-full text-2xl">
+                        <FiCamera />
+                      </span>
+                  )}
+                </button>
+
+                <span className="text-xs text-gray-400">Profile picture (optional)</span>
+
+                <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleAvatarChange}
+                    className="hidden"
+                />
+              </div>
           )}
           <input
             type="email"
